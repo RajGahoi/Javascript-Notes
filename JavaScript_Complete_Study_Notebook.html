@@ -1,0 +1,1571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JavaScript — The Complete Study Notebook</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&family=Caveat:wght@600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f4f7ff;--paper:#ffffff;--paper2:#fafbff;
+  --primary:#6c63ff;--secondary:#ff6584;--mint:#43c6ac;--orange:#f7971e;--purple:#e040fb;--cyan:#00bcd4;
+  --text:#2d2d48;--muted:#7b7b9d;--border:#e4e8ff;
+  --shadow:0 8px 30px rgba(108,99,255,.12);--shadow-card:0 10px 35px rgba(108,99,255,.14);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'Inter',sans-serif;color:var(--text);
+  background:radial-gradient(circle at 15% 10%, rgba(108,99,255,.10), transparent 40%),
+    radial-gradient(circle at 85% 25%, rgba(255,101,132,.10), transparent 40%),
+    radial-gradient(circle at 30% 80%, rgba(67,198,172,.10), transparent 40%),
+    linear-gradient(135deg,#eef2ff 0%,#fdfbff 50%,#f3f7ff 100%);
+  background-attachment:fixed;position:relative;overflow-x:hidden;}
+body::before{content:"";position:fixed;inset:0;
+  background-image:linear-gradient(rgba(108,99,255,.05) 1px, transparent 1px),linear-gradient(90deg, rgba(108,99,255,.05) 1px, transparent 1px);
+  background-size:32px 32px;pointer-events:none;z-index:0;}
+::selection{background:var(--primary);color:#fff;}
+::-webkit-scrollbar{width:10px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:linear-gradient(var(--primary),var(--secondary));border-radius:10px;}
+h1,h2,h3,h4{font-family:'Poppins',sans-serif;}
+.mono{font-family:'JetBrains Mono',monospace;}
+.hand{font-family:'Caveat',cursive;}
+.sg{font-family:'Space Grotesk',sans-serif;}
+a{color:var(--primary);}
+#progress{position:fixed;top:0;left:0;height:4px;background:linear-gradient(90deg,var(--primary),var(--secondary),var(--orange));z-index:9999;width:0%;transition:width .1s;}
+nav{position:sticky;top:0;z-index:900;display:flex;align-items:center;justify-content:space-between;padding:14px 22px;
+  background:rgba(255,255,255,.65);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.5);box-shadow:var(--shadow);}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:1.05rem;background:linear-gradient(90deg,var(--primary),var(--secondary));-webkit-background-clip:text;background-clip:text;color:transparent;flex-shrink:0;}
+.navlinks{display:flex;gap:14px;overflow-x:auto;max-width:52vw;scrollbar-width:none;}
+.navlinks::-webkit-scrollbar{display:none;}
+.navlinks a{white-space:nowrap;font-size:.78rem;font-weight:600;color:var(--muted);text-decoration:none;padding:6px 10px;border-radius:20px;transition:.25s;}
+.navlinks a:hover{color:#fff;background:linear-gradient(90deg,var(--primary),var(--secondary));}
+#searchBox{padding:7px 14px;border-radius:20px;border:1px solid var(--border);font-family:'Inter';font-size:.78rem;outline:none;width:130px;background:rgba(255,255,255,.7);}
+.navRight{display:flex;gap:8px;align-items:center;flex-shrink:0;}
+#themeBtn{cursor:pointer;border:none;background:linear-gradient(135deg,var(--primary),var(--purple));color:#fff;width:32px;height:32px;border-radius:50%;font-size:1rem;box-shadow:var(--shadow);}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px;position:relative;z-index:1;}
+section{padding:80px 0;}
+.cover{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;
+  background:linear-gradient(135deg,#1a1a2e,#16213e,#0f3460);color:#fff;position:relative;overflow:hidden;padding:40px 20px;}
+.blob{position:absolute;border-radius:50%;filter:blur(80px);opacity:.55;animation:float 9s ease-in-out infinite;}
+.b1{width:380px;height:380px;background:var(--primary);top:-100px;left:-100px;}
+.b2{width:320px;height:320px;background:var(--secondary);bottom:-80px;right:-60px;animation-delay:1.5s;}
+.b3{width:260px;height:260px;background:var(--mint);top:40%;right:15%;animation-delay:3s;}
+@keyframes float{0%,100%{transform:translateY(0) scale(1);}50%{transform:translateY(-30px) scale(1.08);}}
+.sparkle{position:absolute;color:#fff;opacity:.7;animation:twinkle 2.4s ease-in-out infinite;}
+@keyframes twinkle{0%,100%{opacity:.2;transform:scale(.8);}50%{opacity:1;transform:scale(1.2);}}
+.cover-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);padding:8px 18px;border-radius:30px;font-size:.8rem;margin-bottom:26px;backdrop-filter:blur(10px);}
+.cover h1{font-size:clamp(2.6rem,7vw,5.2rem);font-weight:800;line-height:1.05;background:linear-gradient(90deg,#fff,#f7e98e,#ffd2e5);-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:18px;}
+.cover p.sub{font-size:1.1rem;color:#c9cbe8;max-width:680px;margin-bottom:30px;}
+.chips{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-bottom:34px;}
+.chip{padding:8px 16px;border-radius:20px;font-size:.76rem;font-weight:600;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.25);color:#eef;backdrop-filter:blur(6px);}
+.cta{display:inline-flex;align-items:center;gap:10px;padding:15px 34px;border-radius:40px;background:linear-gradient(90deg,var(--primary),var(--secondary));color:#fff;font-weight:700;text-decoration:none;box-shadow:0 10px 30px rgba(108,99,255,.5);transition:.3s;border:2px solid transparent;}
+.cta:hover{transform:translateY(-3px) scale(1.03);box-shadow:0 14px 40px rgba(255,101,132,.5);}
+.meta-row{display:flex;gap:26px;margin-top:34px;flex-wrap:wrap;justify-content:center;color:#c9cbe8;font-size:.82rem;}
+.scrollcue{position:absolute;bottom:26px;left:50%;transform:translateX(-50%);color:#c9cbe8;font-size:.75rem;animation:bounce 1.8s infinite;}
+@keyframes bounce{0%,100%{transform:translate(-50%,0);}50%{transform:translate(-50%,8px);}}
+.eyebrow{display:inline-block;font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--primary);background:rgba(108,99,255,.1);padding:5px 14px;border-radius:20px;margin-bottom:14px;}
+.stitle{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;margin-bottom:10px;background:linear-gradient(90deg,var(--text),var(--primary));-webkit-background-clip:text;background-clip:text;color:transparent;}
+.sdesc{color:var(--muted);max-width:720px;margin-bottom:38px;font-size:.98rem;}
+.card{background:rgba(255,255,255,.65);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.5);border-radius:22px;box-shadow:var(--shadow-card);padding:26px;transition:.35s;}
+.card:hover{transform:translateY(-5px);box-shadow:0 18px 45px rgba(108,99,255,.22);}
+.grid{display:grid;gap:20px;}
+.g2{grid-template-columns:repeat(auto-fit,minmax(280px,1fr));}
+.g3{grid-template-columns:repeat(auto-fit,minmax(230px,1fr));}
+.g4{grid-template-columns:repeat(auto-fit,minmax(200px,1fr));}
+.toc-item{display:flex;align-items:center;gap:12px;padding:12px 16px;text-decoration:none;color:var(--text);}
+.toc-num{font-family:'JetBrains Mono';font-weight:700;color:var(--primary);font-size:.8rem;width:34px;flex-shrink:0;}
+.toc-item span.t{font-weight:600;font-size:.88rem;}
+pre{background:#1e1e2e;color:#d8d8ff;padding:16px 18px;border-radius:14px;overflow-x:auto;font-family:'JetBrains Mono';font-size:.8rem;line-height:1.65;position:relative;box-shadow:var(--shadow);margin:10px 0;}
+pre .cm{color:#8888aa;}pre .kw{color:#ff6584;}pre .fn{color:#43c6ac;}pre .st{color:#f7971e;}
+.copybtn{position:absolute;top:10px;right:10px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;font-size:.65rem;padding:4px 10px;border-radius:8px;cursor:pointer;}
+.box{border-radius:16px;padding:16px 20px;margin:12px 0;border-left:5px solid;position:relative;font-size:.9rem;}
+.box h4{margin-bottom:6px;font-size:.88rem;display:flex;align-items:center;gap:8px;}
+.box.important{background:rgba(255,101,132,.08);border-color:var(--secondary);}
+.box.remember{background:rgba(108,99,255,.08);border-color:var(--primary);}
+.box.tip{background:rgba(67,198,172,.08);border-color:var(--mint);}
+.box.example{background:rgba(0,188,212,.08);border-color:var(--cyan);}
+.box.definition{background:rgba(224,64,251,.08);border-color:var(--purple);}
+.box.formula{background:rgba(247,151,30,.08);border-color:var(--orange);}
+.box.warning{background:rgba(255,101,132,.12);border-color:#ff3b5c;}
+.box.exam{background:rgba(108,99,255,.1);border-color:var(--primary);}
+.box.interview{background:rgba(67,198,172,.1);border-color:var(--mint);}
+.box.shortcut{background:rgba(247,151,30,.1);border-color:var(--orange);}
+.box.dyk{background:rgba(224,64,251,.1);border-color:var(--purple);}
+.sticky{background:#fff3b0;padding:16px;border-radius:4px 4px 40px 4px;box-shadow:2px 4px 10px rgba(0,0,0,.15);transform:rotate(-2deg);font-family:'Caveat',cursive;font-size:1.1rem;}
+.sticky.pink{background:#ffd6e7;transform:rotate(2deg);}
+.sticky.mint{background:#d3f8e2;transform:rotate(-1deg);}
+.sticky.blue{background:#d6e8ff;transform:rotate(1.5deg);}
+table{width:100%;border-collapse:collapse;font-size:.86rem;}
+th,td{padding:11px 13px;text-align:left;border-bottom:1px solid var(--border);}
+th{background:linear-gradient(90deg,rgba(108,99,255,.12),rgba(255,101,132,.08));font-weight:700;font-family:'Poppins';}
+tr:hover td{background:rgba(108,99,255,.04);}
+.flash{perspective:1200px;height:150px;cursor:pointer;}
+.flash-inner{position:relative;width:100%;height:100%;transition:transform .6s;transform-style:preserve-3d;}
+.flash.flip .flash-inner{transform:rotateY(180deg);}
+.flash-face{position:absolute;inset:0;backface-visibility:hidden;border-radius:18px;display:flex;align-items:center;justify-content:center;text-align:center;padding:14px;font-weight:600;font-size:.86rem;}
+.flash-front{background:linear-gradient(135deg,var(--primary),var(--purple));color:#fff;}
+.flash-back{background:linear-gradient(135deg,var(--mint),var(--cyan));color:#fff;transform:rotateY(180deg);font-size:.78rem;}
+.acc{border:1px solid var(--border);border-radius:14px;margin-bottom:10px;overflow:hidden;background:rgba(255,255,255,.6);}
+.acc-h{padding:14px 18px;cursor:pointer;font-weight:600;display:flex;justify-content:space-between;align-items:center;font-size:.9rem;}
+.acc-body{max-height:0;overflow:hidden;transition:max-height .35s ease;padding:0 18px;font-size:.86rem;color:var(--muted);}
+.acc.open .acc-body{max-height:900px;padding:0 18px 16px;}
+.acc.open .acc-arrow{transform:rotate(180deg);}
+.acc-arrow{transition:.3s;flex-shrink:0;}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;}
+.tab-btn{padding:8px 16px;border-radius:20px;border:1px solid var(--border);background:#fff;font-weight:600;font-size:.8rem;cursor:pointer;}
+.tab-btn.active{background:linear-gradient(90deg,var(--primary),var(--secondary));color:#fff;border-color:transparent;}
+.tab-panel{display:none;}
+.tab-panel.active{display:block;}
+.timeline{position:relative;padding-left:34px;}
+.timeline::before{content:"";position:absolute;left:9px;top:0;bottom:0;width:3px;background:linear-gradient(var(--primary),var(--secondary));}
+.tl-item{position:relative;margin-bottom:22px;}
+.tl-item::before{content:"";position:absolute;left:-30px;top:4px;width:16px;height:16px;border-radius:50%;background:#fff;border:4px solid var(--primary);}
+.tl-year{font-family:'Space Grotesk';font-weight:700;color:var(--primary);}
+footer{padding:60px 0 40px;text-align:center;color:var(--muted);font-size:.85rem;}
+.divider{height:2px;background:linear-gradient(90deg,transparent,var(--border),transparent);margin:50px 0;}
+#toTop{position:fixed;bottom:26px;right:26px;width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--secondary));color:#fff;border:none;box-shadow:var(--shadow-card);cursor:pointer;font-size:1.1rem;opacity:0;transition:.3s;z-index:800;}
+#toTop.show{opacity:1;}
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease, transform .7s ease;}
+.reveal.in{opacity:1;transform:translateY(0);}
+.pill{display:inline-block;padding:4px 12px;border-radius:14px;font-size:.68rem;font-weight:700;background:rgba(108,99,255,.12);color:var(--primary);margin-bottom:10px;}
+.icon-wrap{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:10px;background:linear-gradient(135deg,var(--primary),var(--secondary));color:#fff;}
+.subhead{font-size:1.05rem;font-weight:700;margin:26px 0 10px;color:var(--text);display:flex;align-items:center;gap:8px;}
+.ascii{background:#12121e;color:#8ee6b8;padding:14px 18px;border-radius:12px;font-family:'JetBrains Mono';font-size:.72rem;line-height:1.5;overflow-x:auto;white-space:pre;}
+.dark body{background:#0f1226;}
+@media(max-width:768px){.navlinks{display:none;}section{padding:56px 0;}}
+</style>
+</head>
+<body>
+
+<div id="progress"></div>
+
+<nav>
+  <div class="brand">🟨 JavaScript</div>
+  <div class="navlinks">
+    <a href="#basics">Basics</a><a href="#datatypes">Data Types</a><a href="#functions">Functions</a>
+    <a href="#objects">Objects</a><a href="#arrays">Arrays</a><a href="#async">Async</a>
+    <a href="#advanced">Advanced</a><a href="#oop">OOP/FP</a><a href="#patterns">Patterns</a>
+    <a href="#security">Security</a><a href="#capstone">Capstone</a>
+    <a href="#cheatsheet">Cheatsheet</a><a href="#interviewq">Interview</a><a href="#mistakes">Mistakes</a>
+  </div>
+  <div class="navRight">
+    <input id="searchBox" placeholder="Search...">
+    <button id="themeBtn" onclick="document.documentElement.classList.toggle('dark')">🌙</button>
+  </div>
+</nav>
+
+<!-- COVER -->
+<section class="cover" id="cover">
+  <div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div>
+  <div class="sparkle" style="top:15%;left:20%;">✦</div>
+  <div class="sparkle" style="top:30%;right:18%;animation-delay:.6s;">✧</div>
+  <div class="sparkle" style="bottom:25%;left:30%;animation-delay:1.2s;">✦</div>
+  <div class="cover-badge">📘 The Complete Notebook · Beginner → Professional</div>
+  <h1>JavaScript</h1>
+  <p class="sub">Variables se leke Event Loop, Closures, Prototypes, Async, OOP, Design Patterns aur real projects tak — sab kuch ek jagah, Hindi + English + Hinglish me, gehraai (depth) ke saath.</p>
+  <div class="chips">
+    <span class="chip">🧠 Engine Internals</span><span class="chip">🔒 Closures & Scope</span>
+    <span class="chip">⚡ Event Loop</span><span class="chip">🧩 Prototypes & OOP</span>
+    <span class="chip">🎯 Design Patterns</span><span class="chip">🚀 Interview Ready</span>
+  </div>
+  <a href="#intro" class="cta">🚀 Start Learning</a>
+  <div class="meta-row">
+    <span>⏱️ Reading time: ~140 min</span><span>🎯 Zero → Professional</span><span>📚 Subject: JavaScript / ECMAScript</span>
+  </div>
+  <div class="scrollcue">↓ scroll to explore ↓</div>
+</section>
+
+<div class="wrap">
+
+<!-- TOC -->
+<section id="toc">
+  <span class="eyebrow">Navigate</span>
+  <h2 class="stitle">Table of Contents</h2>
+  <p class="sdesc">Poora JavaScript ek hi notebook me — jaha chaho waha jump karo.</p>
+  <div class="card grid g3">
+    <a class="toc-item" href="#intro"><span class="toc-num">01</span><span class="t">Introduction & Engines</span></a>
+    <a class="toc-item" href="#setup"><span class="toc-num">02</span><span class="t">Setup (Node, npm, VS Code)</span></a>
+    <a class="toc-item" href="#basics"><span class="toc-num">03</span><span class="t">Variables & Basics</span></a>
+    <a class="toc-item" href="#datatypes"><span class="toc-num">04</span><span class="t">Data Types</span></a>
+    <a class="toc-item" href="#operators"><span class="toc-num">05</span><span class="t">Operators & Coercion</span></a>
+    <a class="toc-item" href="#control"><span class="toc-num">06</span><span class="t">Control Flow</span></a>
+    <a class="toc-item" href="#functions"><span class="toc-num">07</span><span class="t">Functions & Closures</span></a>
+    <a class="toc-item" href="#objects"><span class="toc-num">08</span><span class="t">Objects, this, Prototypes</span></a>
+    <a class="toc-item" href="#arrays"><span class="toc-num">09</span><span class="t">Arrays (all methods)</span></a>
+    <a class="toc-item" href="#strings"><span class="toc-num">10</span><span class="t">Strings, Numbers, Dates, Math, JSON</span></a>
+    <a class="toc-item" href="#errors"><span class="toc-num">11</span><span class="t">Error Handling</span></a>
+    <a class="toc-item" href="#modules"><span class="toc-num">12</span><span class="t">Modules</span></a>
+    <a class="toc-item" href="#dom"><span class="toc-num">13</span><span class="t">DOM & Events & Browser APIs</span></a>
+    <a class="toc-item" href="#storage"><span class="toc-num">14</span><span class="t">Storage</span></a>
+    <a class="toc-item" href="#async"><span class="toc-num">15</span><span class="t">Async JS & Event Loop</span></a>
+    <a class="toc-item" href="#oop"><span class="toc-num">16</span><span class="t">OOP in JavaScript</span></a>
+    <a class="toc-item" href="#fp"><span class="toc-num">17</span><span class="t">Functional Programming</span></a>
+    <a class="toc-item" href="#advanced"><span class="toc-num">18</span><span class="t">Advanced JS (Hoisting, Scope, GC, Proxy...)</span></a>
+    <a class="toc-item" href="#patterns"><span class="toc-num">19</span><span class="t">Design Patterns & SOLID</span></a>
+    <a class="toc-item" href="#cleanperf"><span class="toc-num">20</span><span class="t">Clean Code & Performance</span></a>
+    <a class="toc-item" href="#security"><span class="toc-num">21</span><span class="t">Security</span></a>
+    <a class="toc-item" href="#testing"><span class="toc-num">22</span><span class="t">Testing</span></a>
+    <a class="toc-item" href="#node"><span class="toc-num">23</span><span class="t">Node.js Basics</span></a>
+    <a class="toc-item" href="#buildtools"><span class="toc-num">24</span><span class="t">Build Tools</span></a>
+    <a class="toc-item" href="#architecture"><span class="toc-num">25</span><span class="t">Project Architecture</span></a>
+    <a class="toc-item" href="#capstone"><span class="toc-num">26</span><span class="t">🏆 Capstone — Expense Tracker</span></a>
+    <a class="toc-item" href="#projects"><span class="toc-num">27</span><span class="t">Real Project Blueprints</span></a>
+    <a class="toc-item" href="#diagrams"><span class="toc-num">28</span><span class="t">Diagrams</span></a>
+    <a class="toc-item" href="#cheatsheet"><span class="toc-num">29</span><span class="t">Cheat Sheet</span></a>
+    <a class="toc-item" href="#flashcards"><span class="toc-num">30</span><span class="t">Flashcards</span></a>
+    <a class="toc-item" href="#mnemonics"><span class="toc-num">31</span><span class="t">Mnemonics</span></a>
+    <a class="toc-item" href="#practiceq"><span class="toc-num">32</span><span class="t">Practice Questions</span></a>
+    <a class="toc-item" href="#interviewq"><span class="toc-num">33</span><span class="t">Interview Questions (Tiered)</span></a>
+    <a class="toc-item" href="#mistakes"><span class="toc-num">34</span><span class="t">Common Mistakes</span></a>
+    <a class="toc-item" href="#finalsummary"><span class="toc-num">35</span><span class="t">Final Summary</span></a>
+  </div>
+</section>
+
+<!-- ============ 01 INTRODUCTION ============ -->
+<section id="intro" class="reveal">
+  <span class="eyebrow">01 · Introduction</span>
+  <h2 class="stitle">What is JavaScript? (Hindi + English)</h2>
+  <p class="sdesc"><b>Hindi:</b> JavaScript ek programming language hai jo browser me webpage ko "zinda" (interactive) banati hai. HTML deta hai structure, CSS deta hai design, JavaScript deta hai <b>behavior</b> — click, animation, data fetch, sab kuch.</p>
+  <p class="sdesc"><b>English:</b> JavaScript is a high-level, interpreted (actually JIT-compiled) programming language. It was created in <b>1995 by Brendan Eich</b> at Netscape in just 10 days — originally called Mocha, then LiveScript, then JavaScript (marketing name to ride Java's popularity, though the two languages are unrelated).</p>
+
+  <div class="grid g2">
+    <div class="card"><div class="icon-wrap">📜</div><h3>ECMAScript</h3><p style="color:var(--muted);margin-top:8px;font-size:.9rem">JavaScript language ka official "standard/rulebook" hai — TC39 committee isse maintain karti hai. Har saal ek naya version aata hai (ES2015/ES6, ES2016...ES2025). "JavaScript" implementation hai, "ECMAScript" specification hai.</p></div>
+    <div class="card"><div class="icon-wrap" style="background:linear-gradient(135deg,var(--mint),var(--cyan));">⚙️</div><h3>JS Engine</h3><p style="color:var(--muted);margin-top:8px;font-size:.9rem">Woh program jo JS code ko samajhkar chalata hai. Chrome/Node → <b>V8</b>. Firefox → <b>SpiderMonkey</b>. Safari → <b>JavaScriptCore</b>. Har engine apne tareeke se optimize karta hai, par ECMAScript spec follow karta hai.</p></div>
+    <div class="card"><div class="icon-wrap" style="background:linear-gradient(135deg,var(--orange),var(--secondary));">🔄</div><h3>Compilation vs Interpretation</h3><p style="color:var(--muted);margin-top:8px;font-size:.9rem">Purana idea: JS "interpreted" hai (line-by-line chalti hai, slow). Reality (modern engines): JS <b>JIT (Just-In-Time) compiled</b> hai — code pehle parse hota hai, phir machine code me compile hota hai runtime par, execution ke saath-saath — best of both worlds (fast startup + fast execution).</p></div>
+    <div class="card"><div class="icon-wrap" style="background:linear-gradient(135deg,var(--purple),var(--primary));">🌐</div><h3>Runtime Environment</h3><p style="color:var(--muted);margin-top:8px;font-size:.9rem">JS engine akela sirf language samajhta hai — DOM, fetch, setTimeout jaisi cheezein engine ka part nahi hain! Ye "runtime" (Browser ya Node.js) deta hai. Isliye same JS engine (V8) browser me aur Node me alag "runtime APIs" deta hai.</p></div>
+  </div>
+
+  <div class="subhead">🔹 Internal Working — V8 Engine ke andar kya hota hai</div>
+  <div class="ascii">Your Code
+   │
+   ▼
+┌─────────────┐    ┌──────────────┐    ┌─────────────────┐
+│   Parser    │───▶│  Ignition    │───▶│   TurboFan       │
+│ (AST banata │    │ (Interpreter │    │ (Optimizing JIT  │
+│  hai code se)│   │  — bytecode  │    │  Compiler — hot  │
+│             │    │  chalata hai)│    │  code ko machine │
+│             │    │              │    │  code me compile │
+│             │    │              │    │  karta hai)      │
+└─────────────┘    └──────────────┘    └─────────────────┘</div>
+  <p style="font-size:.86rem;color:var(--muted);margin-top:10px">Engine pehle code parse karke AST (Abstract Syntax Tree) banata hai, phir Ignition interpreter usse bytecode me convert karke chalata hai. Jo function bar-bar (repeatedly) chalta hai ("hot" code), usse TurboFan highly-optimized machine code me compile kar deta hai — isliye loops jaisi cheezein time ke saath fast ho jaati hain.</p>
+
+  <div class="box dyk"><h4>💡 Did You Know?</h4>JavaScript sirf 10 din me likhi gayi thi (1995) — isiliye kuch design quirks hain (jaise <span class="mono">typeof null === 'object'</span>) jo aaj tak backward-compatibility ke liye fix nahi kiye ja sakte.</p></div>
+</section>
+
+<!-- ============ 02 SETUP ============ -->
+<section id="setup" class="reveal">
+  <span class="eyebrow">02 · Setup</span>
+  <h2 class="stitle">Setting Up Your Environment</h2>
+  <div class="grid g2">
+    <div class="card"><h3>Browser Console</h3><p style="color:var(--muted);font-size:.86rem;margin-top:6px">F12 dabao → Console tab — JS turant test kar sakte ho, zero setup.</p></div>
+    <div class="card"><h3>VS Code</h3><p style="color:var(--muted);font-size:.86rem;margin-top:6px">Industry-standard editor. "Live Server" extension se HTML file browser me auto-refresh ke saath khulti hai.</p></div>
+    <div class="card"><h3>Node.js</h3><p style="color:var(--muted);font-size:.86rem;margin-top:6px">JS ko browser ke bahar (terminal me, server par) chalane deta hai — V8 engine ke upar bana hua runtime.</p></div>
+    <div class="card"><h3>npm / npx</h3><p style="color:var(--muted);font-size:.86rem;margin-top:6px"><span class="mono">npm</span> = Node Package Manager — libraries install karta hai. <span class="mono">npx</span> = kisi package ko bina permanently install kiye ek baar chalata hai.</p></div>
+  </div>
+  <pre><span class="cm"># Terminal commands</span>
+node -v              <span class="cm"># Node version check</span>
+node app.js          <span class="cm"># run a JS file</span>
+npm init -y          <span class="cm"># creates package.json (project's identity card)</span>
+npm install axios    <span class="cm"># installs a library into node_modules/</span></pre>
+  <div class="box tip"><h4>💡 package.json vs package-lock.json</h4><span class="mono">package.json</span> — tum manually likhte ho, dependencies ki "wishlist" (version ranges jaise ^1.2.0). <span class="mono">package-lock.json</span> — npm automatically banata hai, exact installed versions lock karta hai taaki "works on my machine" problem na ho.</div>
+</section>
+
+<!-- ============ 03 BASICS ============ -->
+<section id="basics" class="reveal">
+  <span class="eyebrow">03 · Basics</span>
+  <h2 class="stitle">Variables & Fundamentals</h2>
+
+  <div class="subhead">🔹 let, const, var — the full story</div>
+  <pre><span class="kw">var</span> a = <span class="st">1</span>;   <span class="cm">// old way (ES5) — function-scoped, avoid in modern code</span>
+<span class="kw">let</span> b = <span class="st">2</span>;   <span class="cm">// modern, block-scoped, value can change</span>
+<span class="kw">const</span> c = <span class="st">3</span>; <span class="cm">// modern, block-scoped, CANNOT be reassigned</span></pre>
+  <div class="card"><table>
+    <tr><th>Feature</th><th>var</th><th>let</th><th>const</th></tr>
+    <tr><td>Scope</td><td>Function-scoped</td><td>Block-scoped</td><td>Block-scoped</td></tr>
+    <tr><td>Redeclare?</td><td>✅ Yes</td><td>❌ No</td><td>❌ No</td></tr>
+    <tr><td>Reassign?</td><td>✅ Yes</td><td>✅ Yes</td><td>❌ No</td></tr>
+    <tr><td>Hoisting</td><td>Hoisted, initialized as undefined</td><td>Hoisted but in "Temporal Dead Zone"</td><td>Same as let</td></tr>
+  </table></div>
+  <div class="box warning"><h4>⚠️ Why var is dangerous — a real bug</h4>
+  <pre style="margin-top:8px;font-size:.76rem">for (var i = 0; i &lt; 3; i++) {
+  setTimeout(() =&gt; console.log(i), 100);
+}
+<span class="cm">// Prints: 3, 3, 3 — NOT 0, 1, 2!</span>
+<span class="cm">// Why? var is function-scoped, so all 3 callbacks share the SAME i.</span>
+<span class="cm">// By the time setTimeout runs, the loop has finished and i = 3.</span>
+<span class="cm">// Fix: use 'let' — it creates a NEW binding per loop iteration.</span></pre></div>
+  <div class="box important"><h4>⭐ const ka matlab "constant value" nahi</h4><span class="mono">const</span> sirf variable ko <b>reassign</b> hone se rokta hai, object/array ke andar ke content ko nahi. <span class="mono">const arr = [1,2]; arr.push(3);</span> — ye valid hai! Sirf <span class="mono">arr = [4,5]</span> invalid hai.</div>
+
+  <div class="subhead">🔹 Naming, Keywords, Comments</div>
+  <pre><span class="cm">// camelCase convention — standard in JS</span>
+<span class="kw">let</span> userName = <span class="st">"Raj"</span>;
+<span class="kw">let</span> MAX_RETRIES = <span class="st">3</span>; <span class="cm">// UPPER_SNAKE_CASE for constants that never change</span>
+<span class="cm">/* multi-line
+   comment */</span></pre>
+
+  <div class="subhead">🔹 Strict Mode</div>
+  <pre><span class="st">'use strict'</span>; <span class="cm">// top of file/function</span>
+x = <span class="st">10</span>; <span class="cm">// ❌ Error in strict mode: "x is not defined" (catches accidental globals)</span></pre>
+  <p style="font-size:.86rem;color:var(--muted)">Strict mode silent bugs ko loud errors bana deta hai — jaise galti se global variable banana, ya read-only property ko modify karna. ES6 modules aur classes automatically strict mode me hoti hain.</p>
+</section>
+
+<!-- ============ 04 DATA TYPES ============ -->
+<section id="datatypes" class="reveal">
+  <span class="eyebrow">04 · Data Types</span>
+  <h2 class="stitle">Data Types Deep Dive</h2>
+  <p class="sdesc">JS me 2 categories: <b>Primitive</b> (immutable, value copy hoti hai) aur <b>Non-Primitive/Reference</b> (mutable, reference copy hoti hai).</p>
+
+  <div class="grid g2">
+    <div class="card"><h3>Primitive Types (7)</h3><ul style="padding-left:18px;margin-top:8px;font-size:.85rem;color:var(--muted)">
+      <li><span class="mono">string</span> — text</li>
+      <li><span class="mono">number</span> — integers & floats (double-precision)</li>
+      <li><span class="mono">boolean</span> — true/false</li>
+      <li><span class="mono">undefined</span> — variable declared, value nahi diya</li>
+      <li><span class="mono">null</span> — intentional "koi value nahi"</li>
+      <li><span class="mono">bigint</span> — bade integers (Number.MAX_SAFE_INTEGER se bade)</li>
+      <li><span class="mono">symbol</span> — unique aur immutable identifier</li>
+    </ul></div>
+    <div class="card"><h3>Non-Primitive (Reference)</h3><ul style="padding-left:18px;margin-top:8px;font-size:.85rem;color:var(--muted)">
+      <li><span class="mono">object</span> — key-value pairs</li>
+      <li><span class="mono">array</span> — ordered list (actually a special object)</li>
+      <li><span class="mono">function</span> — callable object</li>
+    </ul></div>
+  </div>
+
+  <div class="subhead">🔹 The critical difference — value vs reference (memory behavior)</div>
+  <pre><span class="cm">// PRIMITIVE — copies the VALUE</span>
+<span class="kw">let</span> a = <span class="st">10</span>;
+<span class="kw">let</span> b = a;  <span class="cm">// b gets its own copy: 10</span>
+b = <span class="st">20</span>;
+console.log(a); <span class="cm">// 10 — unaffected</span>
+
+<span class="cm">// OBJECT — copies the REFERENCE (memory address)</span>
+<span class="kw">let</span> obj1 = { val: <span class="st">10</span> };
+<span class="kw">let</span> obj2 = obj1;  <span class="cm">// obj2 points to the SAME object in memory</span>
+obj2.val = <span class="st">20</span>;
+console.log(obj1.val); <span class="cm">// 20 — changed! Both point to same memory location</span></pre>
+  <div class="ascii">Primitives (Stack):        Objects (Heap, referenced from Stack):
+a → [10]                   obj1 → ┐
+b → [20] (own copy)              ├──▶ {val: 20}  (shared in Heap)
+                            obj2 → ┘</div>
+
+  <div class="subhead">🔹 typeof — the quirky operator</div>
+  <pre>typeof <span class="st">42</span>          <span class="cm">// "number"</span>
+typeof <span class="st">"hi"</span>        <span class="cm">// "string"</span>
+typeof <span class="kw">true</span>        <span class="cm">// "boolean"</span>
+typeof <span class="kw">undefined</span>   <span class="cm">// "undefined"</span>
+typeof <span class="kw">null</span>        <span class="cm">// "object"  ❌ famous JS bug! (kept for backward-compat, never fixed)</span>
+typeof {}           <span class="cm">// "object"</span>
+typeof []            <span class="cm">// "object"  (arrays are objects — use Array.isArray() to check)</span>
+typeof <span class="kw">function</span>(){} <span class="cm">// "function"</span>
+typeof <span class="st">10n</span>          <span class="cm">// "bigint"</span>
+typeof Symbol()      <span class="cm">// "symbol"</span></pre>
+
+  <div class="box interview"><h4>🎤 Interview classic — null vs undefined</h4><span class="mono">undefined</span> = JS engine ne khud diya (variable declared but not assigned, missing function argument, missing object property). <span class="mono">null</span> = developer ne <i>intentionally</i> "empty" set kiya. <span class="mono">null == undefined</span> → true (loose equality), <span class="mono">null === undefined</span> → false (different types).</div>
+</section>
+
+<!-- ============ 05 OPERATORS ============ -->
+<section id="operators" class="reveal">
+  <span class="eyebrow">05 · Operators</span>
+  <h2 class="stitle">Operators & Type Coercion</h2>
+  <div class="grid g3">
+    <div class="card"><b>Arithmetic</b><p style="font-size:.8rem;color:var(--muted);margin-top:6px" class="mono">+ - * / % **</p></div>
+    <div class="card"><b>Assignment</b><p style="font-size:.8rem;color:var(--muted);margin-top:6px" class="mono">= += -= *= /=</p></div>
+    <div class="card"><b>Comparison</b><p style="font-size:.8rem;color:var(--muted);margin-top:6px" class="mono">== != === !== &gt; &lt; &gt;= &lt;=</p></div>
+    <div class="card"><b>Logical</b><p style="font-size:.8rem;color:var(--muted);margin-top:6px" class="mono">&& || !</p></div>
+    <div class="card"><b>Ternary</b><p style="font-size:.8rem;color:var(--muted);margin-top:6px" class="mono">cond ? a : b</p></div>
+    <div class="card"><b>Nullish/Optional</b><p style="font-size:.8rem;color:var(--muted);margin-top:6px" class="mono">?? ?.</p></div>
+  </div>
+
+  <div class="subhead">🔹 == vs === (the interview favorite)</div>
+  <pre><span class="st">5</span> == <span class="st">"5"</span>   <span class="cm">// true — coerces types before comparing (loose equality)</span>
+<span class="st">5</span> === <span class="st">"5"</span>  <span class="cm">// false — checks type AND value (strict equality)</span>
+<span class="cm">// RULE: always use === in real code. == causes confusing bugs.</span></pre>
+
+  <div class="subhead">🔹 Truthy & Falsy — the 8 falsy values (memorize these!)</div>
+  <div class="card"><table><tr><th>Falsy values (everything else is truthy)</th></tr>
+    <tr><td class="mono">false, 0, -0, 0n, "", null, undefined, NaN</td></tr>
+  </table></div>
+  <pre><span class="kw">if</span> (<span class="st">""</span>) console.log(<span class="st">"runs"</span>);      <span class="cm">// doesn't run — "" is falsy</span>
+<span class="kw">if</span> (<span class="st">"0"</span>) console.log(<span class="st">"runs"</span>);     <span class="cm">// RUNS! "0" is a non-empty string = truthy</span></pre>
+
+  <div class="subhead">🔹 Coercion — implicit type conversion (common source of bugs)</div>
+  <pre><span class="st">"5"</span> + <span class="st">3</span>     <span class="cm">// "53" — + with a string triggers string concatenation</span>
+<span class="st">"5"</span> - <span class="st">3</span>     <span class="cm">// 2   — minus forces both sides to numbers</span>
+<span class="st">"5"</span> * <span class="st">"2"</span>   <span class="cm">// 10  — * also forces numbers</span>
+<span class="st">1</span> + <span class="kw">true</span>   <span class="cm">// 2   — true becomes 1</span>
+[] + []       <span class="cm">// ""  — arrays become strings, "" + "" = ""</span></pre>
+  <div class="box warning"><h4>⚠️ Common mistake</h4>API se number "5" string me aata hai, aur developer <span class="mono">total + apiValue</span> kar deta hai — expecting math, milta hai concatenation ("105" instead of 15). Fix: <span class="mono">Number(apiValue)</span> se explicitly convert karo.</div>
+  <div class="box tip"><h4>💡 Optional chaining & Nullish coalescing (ES2020)</h4>
+  <pre style="margin-top:8px;font-size:.78rem">user?.address?.city    <span class="cm">// undefined agar koi bhi step null/undefined ho, error nahi</span>
+count ?? 10             <span class="cm">// 10 sirf agar count null/undefined ho (0 ya "" ko preserve karta hai, unlike ||)</span></pre></div>
+</section>
+
+<!-- ============ 06 CONTROL FLOW ============ -->
+<section id="control" class="reveal">
+  <span class="eyebrow">06 · Control Flow</span>
+  <h2 class="stitle">Control Flow</h2>
+  <pre><span class="kw">if</span> (age &gt;= <span class="st">18</span>) {
+  console.log(<span class="st">"Adult"</span>);
+} <span class="kw">else if</span> (age &gt;= <span class="st">13</span>) {
+  console.log(<span class="st">"Teen"</span>);
+} <span class="kw">else</span> {
+  console.log(<span class="st">"Child"</span>);
+}
+
+<span class="kw">switch</span>(day) {
+  <span class="kw">case</span> <span class="st">'Mon'</span>: console.log(<span class="st">"Start"</span>); <span class="kw">break</span>;
+  <span class="kw">case</span> <span class="st">'Fri'</span>: console.log(<span class="st">"Almost done"</span>); <span class="kw">break</span>;
+  <span class="kw">default</span>: console.log(<span class="st">"Regular day"</span>);
+}
+
+<span class="kw">for</span> (<span class="kw">let</span> i=<span class="st">0</span>; i&lt;<span class="st">5</span>; i++) { <span class="cm">/* runs 5 times */</span> }
+<span class="kw">while</span>(condition) { <span class="cm">/* runs until false */</span> }
+<span class="kw">do</span> { <span class="cm">/* runs at least once */</span> } <span class="kw">while</span>(condition);
+
+<span class="kw">for</span> (<span class="kw">const</span> item <span class="kw">of</span> array)  { <span class="cm">// iterates VALUES</span> }
+<span class="kw">for</span> (<span class="kw">const</span> key <span class="kw">in</span> object)  { <span class="cm">// iterates KEYS</span> }</pre>
+  <div class="box warning"><h4>⚠️ switch — mat bhoolo break!</h4>Ek case ke baad <span class="mono">break</span> na ho to "fall-through" hota hai — agla case bhi chal jaata hai chahe match na kare.</div>
+  <div class="box remember"><h4>🧠 for...of vs for...in</h4><span class="mono">for...of</span> arrays/strings ke <b>values</b> ke liye. <span class="mono">for...in</span> object ke <b>keys</b> ke liye — array par for...in use mat karo (unexpected inherited properties bhi mil sakti hain).</div>
+</section>
+
+<!-- ============ 07 FUNCTIONS & CLOSURES ============ -->
+<section id="functions" class="reveal">
+  <span class="eyebrow">07 · Functions</span>
+  <h2 class="stitle">Functions, Scope & Closures</h2>
+
+  <div class="subhead">🔹 Function types</div>
+  <pre><span class="cm">// 1. Declaration — hoisted fully, can call before definition</span>
+<span class="kw">function</span> <span class="fn">greet</span>(name) { <span class="kw">return</span> <span class="cm">`Hello ${name}`</span>; }
+
+<span class="cm">// 2. Expression — NOT hoisted, stored in a variable</span>
+<span class="kw">const</span> greet2 = <span class="kw">function</span>(name) { <span class="kw">return</span> <span class="cm">`Hi ${name}`</span>; };
+
+<span class="cm">// 3. Arrow function — shorter syntax, NO OWN 'this'</span>
+<span class="kw">const</span> greet3 = (name) =&gt; <span class="cm">`Hey ${name}`</span>;
+
+<span class="cm">// 4. IIFE (Immediately Invoked Function Expression) — runs once, creates private scope</span>
+(<span class="kw">function</span>() { console.log(<span class="st">"runs immediately"</span>); })();</pre>
+
+  <div class="subhead">🔹 Why arrow functions and normal functions are NOT interchangeable</div>
+  <pre><span class="kw">const</span> obj = {
+  name: <span class="st">'Raj'</span>,
+  greetNormal: <span class="kw">function</span>() { console.log(this.name); }, <span class="cm">// 'this' = obj → "Raj"</span>
+  greetArrow: () =&gt; { console.log(this.name); }              <span class="cm">// 'this' = outer scope → undefined!</span>
+};
+obj.greetNormal(); <span class="cm">// "Raj"</span>
+obj.greetArrow();  <span class="cm">// undefined — arrow functions don't have their own 'this'</span></pre>
+
+  <div class="subhead">🔹 Closures — the most important JS concept</div>
+  <p style="font-size:.9rem;color:var(--muted);margin-bottom:8px"><b>Why it exists:</b> Normally jab function return ho jaata hai, uske andar ki variables "gayab" ho jaani chahiye (garbage collected). Par closures inhe "yaad" rakhte hain — agar koi inner function unhe use kar raha ho.</p>
+  <pre><span class="kw">function</span> <span class="fn">makeCounter</span>() {
+  <span class="kw">let</span> count = <span class="st">0</span>;              <span class="cm">// this variable is "enclosed"</span>
+  <span class="kw">return function</span>() {         <span class="cm">// inner function "remembers" count forever</span>
+    count++;
+    <span class="kw">return</span> count;
+  };
+}
+<span class="kw">const</span> counter = <span class="fn">makeCounter</span>();
+counter(); <span class="cm">// 1</span>
+counter(); <span class="cm">// 2 — count persisted between calls!</span>
+counter(); <span class="cm">// 3</span></pre>
+  <p style="font-size:.86rem;color:var(--muted)"><b>How it works internally:</b> Har function call ek naya "execution context" banata hai jisme ek "lexical environment" hota hai. Jab inner function bahar return hoti hai, JS engine outer variables ko garbage-collect nahi karta agar inner function abhi bhi unhe reference kar rahi hai — ye variables "closure" ke andar zinda rehte hain.</p>
+  <div class="box important"><h4>⭐ Real project use — Closures</h4>Private variables banana (module pattern), event handler ke andar current state "remember" karna, <span class="mono">useState</span>/<span class="mono">useEffect</span> jaise React hooks internally closures hi use karte hain, debounce/throttle functions.</div>
+
+  <div class="subhead">🔹 Lexical Scope & Scope Chain</div>
+  <pre><span class="kw">let</span> globalVar = <span class="st">"global"</span>;
+<span class="kw">function</span> <span class="fn">outer</span>() {
+  <span class="kw">let</span> outerVar = <span class="st">"outer"</span>;
+  <span class="kw">function</span> <span class="fn">inner</span>() {
+    <span class="kw">let</span> innerVar = <span class="st">"inner"</span>;
+    console.log(innerVar, outerVar, globalVar); <span class="cm">// all accessible!</span>
+  }
+  <span class="fn">inner</span>();
+}
+<span class="cm">// "Lexical" = scope decided by WHERE code is WRITTEN, not where it's called from.</span>
+<span class="cm">// inner() can see outer's variables because it's physically nested inside it.</span></pre>
+
+  <div class="subhead">🔹 Rest, Spread, Default Parameters</div>
+  <pre><span class="kw">function</span> <span class="fn">sum</span>(...numbers) { <span class="cm">// rest — collects args into an array</span>
+  <span class="kw">return</span> numbers.reduce((a,b) =&gt; a+b, <span class="st">0</span>);
+}
+<span class="fn">sum</span>(<span class="st">1</span>,<span class="st">2</span>,<span class="st">3</span>); <span class="cm">// 6</span>
+
+<span class="kw">const</span> arr1 = [<span class="st">1</span>,<span class="st">2</span>];
+<span class="kw">const</span> arr2 = [...arr1, <span class="st">3</span>,<span class="st">4</span>]; <span class="cm">// spread — expands array into elements: [1,2,3,4]</span>
+
+<span class="kw">function</span> <span class="fn">greet</span>(name = <span class="st">"Guest"</span>) { <span class="cm">// default parameter</span>
+  <span class="kw">return</span> <span class="cm">`Hi ${name}`</span>;
+}
+<span class="fn">greet</span>(); <span class="cm">// "Hi Guest"</span></pre>
+
+  <div class="subhead">🔹 Higher-Order Functions & Callbacks</div>
+  <pre><span class="cm">// A function that takes/returns another function = Higher-Order Function</span>
+<span class="kw">function</span> <span class="fn">withLogging</span>(fn) {
+  <span class="kw">return function</span>(...args) {
+    console.log(<span class="st">'Calling with:'</span>, args);
+    <span class="kw">return</span> fn(...args);
+  };
+}
+<span class="kw">const</span> loggedAdd = <span class="fn">withLogging</span>((a,b) =&gt; a+b);
+<span class="fn">loggedAdd</span>(<span class="st">2</span>,<span class="st">3</span>); <span class="cm">// logs "Calling with: [2,3]", returns 5</span></pre>
+
+  <div class="subhead">🔹 Recursion</div>
+  <pre><span class="kw">function</span> <span class="fn">factorial</span>(n) {
+  <span class="kw">if</span> (n &lt;= <span class="st">1</span>) <span class="kw">return</span> <span class="st">1</span>; <span class="cm">// BASE CASE — without this, infinite recursion → stack overflow!</span>
+  <span class="kw">return</span> n * <span class="fn">factorial</span>(n - <span class="st">1</span>);
+}
+<span class="fn">factorial</span>(<span class="st">5</span>); <span class="cm">// 120</span></pre>
+  <div class="box warning"><h4>⚠️ Common mistake — missing base case</h4>Har recursive function ko ek "stopping condition" chahiye, warna Call Stack overflow ho jaata hai ("Maximum call stack size exceeded").</div>
+
+  <div class="box shortcut"><h4>⏩ Pro Tips</h4>Chrome DevTools me function ke andar <span class="mono">debugger;</span> likho — execution wahi pause ho jaayegi jab DevTools khula ho. Arrow functions use karo callbacks ke liye jab tumhe 'this' binding nahi chahiye; normal functions use karo object methods ke liye jab chahiye.</div>
+</section>
+
+<!-- ============ 08 OBJECTS ============ -->
+<section id="objects" class="reveal">
+  <span class="eyebrow">08 · Objects</span>
+  <h2 class="stitle">Objects, this, Prototypes</h2>
+
+  <div class="subhead">🔹 Object basics</div>
+  <pre><span class="kw">const</span> person = {
+  name: <span class="st">'Raj'</span>,
+  age: <span class="st">20</span>,
+  greet() { <span class="kw">return</span> <span class="cm">`Hi, I'm ${this.name}`</span>; } <span class="cm">// method shorthand</span>
+};
+person.name;        <span class="cm">// dot notation</span>
+person[<span class="st">'name'</span>];    <span class="cm">// bracket notation — needed for dynamic keys</span>
+<span class="kw">const</span> { name, age } = person; <span class="cm">// destructuring</span></pre>
+
+  <div class="subhead">🔹 'this' — depends on HOW a function is called, not where it's defined</div>
+  <div class="card"><table>
+    <tr><th>Call pattern</th><th>What 'this' is</th></tr>
+    <tr><td class="mono">obj.method()</td><td>obj (the object before the dot)</td></tr>
+    <tr><td class="mono">standalone function()</td><td>undefined (strict mode) / global object</td></tr>
+    <tr><td class="mono">arrow function</td><td>whatever 'this' was in the ENCLOSING scope</td></tr>
+    <tr><td class="mono">new Constructor()</td><td>the newly created object</td></tr>
+    <tr><td class="mono">fn.call(obj)</td><td>explicitly set to obj</td></tr>
+  </table></div>
+
+  <div class="subhead">🔹 call, apply, bind</div>
+  <pre><span class="kw">function</span> <span class="fn">introduce</span>(greeting) { <span class="kw">return</span> <span class="cm">`${greeting}, I'm ${this.name}`</span>; }
+<span class="kw">const</span> user = { name: <span class="st">'Raj'</span> };
+
+<span class="fn">introduce</span>.call(user, <span class="st">'Hi'</span>);       <span class="cm">// runs NOW, args passed individually: "Hi, I'm Raj"</span>
+<span class="fn">introduce</span>.apply(user, [<span class="st">'Hi'</span>]);   <span class="cm">// runs NOW, args passed as array</span>
+<span class="kw">const</span> bound = <span class="fn">introduce</span>.bind(user); <span class="cm">// returns a NEW function, doesn't run yet</span>
+bound(<span class="st">'Hey'</span>);                       <span class="cm">// "Hey, I'm Raj" — 'this' permanently locked to user</span></pre>
+  <div class="box tip"><h4>💡 Real project use</h4><span class="mono">bind</span> React class components me event handlers ke liye common tha (<span class="mono">this.handleClick = this.handleClick.bind(this)</span>) — modern code me arrow function class fields se avoid karte hain.</div>
+
+  <div class="subhead">🔹 Prototype & Prototype Chain</div>
+  <p style="font-size:.9rem;color:var(--muted);margin-bottom:8px"><b>Why it exists:</b> JS me classical "class" inheritance (jaise Java) nahi hai — JS <b>prototype-based</b> hai. Har object ke paas ek hidden link (<span class="mono">[[Prototype]]</span>) hota hai kisi doosre object ki taraf, jahan se woh properties/methods "udhaar" (inherit) leta hai.</p>
+  <pre><span class="kw">const</span> animal = { eats: <span class="kw">true</span> };
+<span class="kw">const</span> rabbit = Object.create(animal); <span class="cm">// rabbit's prototype = animal</span>
+rabbit.jumps = <span class="kw">true</span>;
+console.log(rabbit.eats);  <span class="cm">// true — found on prototype chain, not on rabbit itself!</span>
+console.log(rabbit.jumps); <span class="cm">// true — own property</span></pre>
+  <div class="ascii">rabbit  {jumps: true}
+   │  [[Prototype]]
+   ▼
+animal  {eats: true}
+   │  [[Prototype]]
+   ▼
+Object.prototype  {toString, hasOwnProperty, ...}
+   │
+   ▼
+null  (end of chain)</div>
+  <p style="font-size:.86rem;color:var(--muted)">Jab tum <span class="mono">rabbit.eats</span> access karte ho, engine pehle rabbit khud check karta hai, na mile to prototype chain "upar" search karta hai jab tak mil na jaaye ya null tak pahunch jaaye.</p>
+
+  <div class="subhead">🔹 Property Descriptors</div>
+  <pre>Object.defineProperty(person, <span class="st">'age'</span>, {
+  value: <span class="st">20</span>,
+  writable: <span class="kw">false</span>,   <span class="cm">// can't be reassigned</span>
+  enumerable: <span class="kw">true</span>,  <span class="cm">// shows up in for...in / Object.keys</span>
+  configurable: <span class="kw">false</span> <span class="cm">// can't be deleted or reconfigured</span>
+});</pre>
+  <div class="box interview"><h4>🎤 Interview — Object.freeze() vs const</h4><span class="mono">const</span> variable ko reassign hone se rokta hai. <span class="mono">Object.freeze(obj)</span> object ke andar ki properties ko change hone se rokta hai (shallow — nested objects freeze nahi hote).</div>
+</section>
+
+<!-- ============ 09 ARRAYS ============ -->
+<section id="arrays" class="reveal">
+  <span class="eyebrow">09 · Arrays</span>
+  <h2 class="stitle">Arrays — Every Method Explained</h2>
+  <p class="sdesc">Array JS me ek special object hai — numeric keys ke saath. Methods ko 2 categories me samjho: <b>mutating</b> (original array badalte hain) aur <b>non-mutating</b> (naya array return karte hain).</p>
+
+  <div class="subhead">🔹 Mutating methods (original array change hota hai)</div>
+  <div class="card"><table>
+    <tr><th>Method</th><th>What it does</th><th>Time Complexity</th></tr>
+    <tr><td class="mono">push(x)</td><td>End me add karta hai</td><td>O(1)</td></tr>
+    <tr><td class="mono">pop()</td><td>End se remove karta hai</td><td>O(1)</td></tr>
+    <tr><td class="mono">unshift(x)</td><td>Start me add karta hai</td><td>O(n) — sab elements shift hote hain</td></tr>
+    <tr><td class="mono">shift()</td><td>Start se remove karta hai</td><td>O(n)</td></tr>
+    <tr><td class="mono">splice(i, count)</td><td>Beech se add/remove</td><td>O(n)</td></tr>
+    <tr><td class="mono">sort(), reverse()</td><td>In-place sort/reverse</td><td>O(n log n) / O(n)</td></tr>
+  </table></div>
+
+  <div class="subhead">🔹 Non-mutating methods (naya array/value return karte hain — preferred!)</div>
+  <pre><span class="kw">const</span> nums = [<span class="st">1</span>,<span class="st">2</span>,<span class="st">3</span>,<span class="st">4</span>,<span class="st">5</span>];
+
+nums.map(n =&gt; n * <span class="st">2</span>);          <span class="cm">// [2,4,6,8,10] — transforms each element</span>
+nums.filter(n =&gt; n % <span class="st">2</span> === <span class="st">0</span>); <span class="cm">// [2,4] — keeps elements matching condition</span>
+nums.reduce((sum,n) =&gt; sum+n, <span class="st">0</span>); <span class="cm">// 15 — combines all into ONE value</span>
+nums.find(n =&gt; n &gt; <span class="st">3</span>);          <span class="cm">// 4 — first matching element</span>
+nums.some(n =&gt; n &gt; <span class="st">4</span>);          <span class="cm">// true — is ANY element matching?</span>
+nums.every(n =&gt; n &gt; <span class="st">0</span>);          <span class="cm">// true — are ALL elements matching?</span>
+nums.slice(<span class="st">1</span>,<span class="st">3</span>);              <span class="cm">// [2,3] — extract portion, original unchanged</span>
+nums.includes(<span class="st">3</span>);              <span class="cm">// true</span>
+nums.join(<span class="st">'-'</span>);               <span class="cm">// "1-2-3-4-5"</span></pre>
+  <div class="box important"><h4>⭐ splice vs slice — the classic confusion</h4><span class="mono">slice(start, end)</span> — original array ko chhuti nahi, naya array return karta hai (non-mutating). <span class="mono">splice(start, deleteCount, ...items)</span> — original array ko directly modify karta hai (mutating), removed elements return karta hai.</div>
+
+  <div class="subhead">🔹 reduce — the most powerful (and confusing) method</div>
+  <pre><span class="cm">// reduce can build ANYTHING — sum, max, group, flatten, even map/filter!</span>
+<span class="kw">const</span> cart = [{price:<span class="st">100</span>},{price:<span class="st">200</span>},{price:<span class="st">50</span>}];
+<span class="kw">const</span> total = cart.reduce((acc, item) =&gt; acc + item.price, <span class="st">0</span>); <span class="cm">// 350</span>
+
+<span class="cm">// grouping example — very common in real projects</span>
+<span class="kw">const</span> people = [{name:<span class="st">'A'</span>,dept:<span class="st">'HR'</span>},{name:<span class="st">'B'</span>,dept:<span class="st">'IT'</span>},{name:<span class="st">'C'</span>,dept:<span class="st">'HR'</span>}];
+<span class="kw">const</span> grouped = people.reduce((acc, p) =&gt; {
+  (acc[p.dept] ??= []).push(p);
+  <span class="kw">return</span> acc;
+}, {});
+<span class="cm">// { HR: [A,C], IT: [B] }</span></pre>
+
+  <div class="box shortcut"><h4>⏩ Pro Tip</h4>Real projects me chain karo: <span class="mono">data.filter(...).map(...).sort(...)</span> — readable pipeline banti hai. Bade arrays (10,000+) par chaining se performance concern ho to ek hi loop me combine karo.</div>
+  <div class="box warning"><h4>⚠️ Common mistake</h4><span class="mono">array.sort()</span> default me elements ko STRING me convert karke sort karta hai — <span class="mono">[10, 2, 1].sort()</span> deta hai <span class="mono">[1, 10, 2]</span>, not [1,2,10]! Numbers ke liye <span class="mono">sort((a,b) =&gt; a-b)</span> use karo.</div>
+</section>
+
+<!-- ============ 10 STRINGS/NUMBERS/DATES/MATH/JSON ============ -->
+<section id="strings" class="reveal">
+  <span class="eyebrow">10 · Strings, Numbers, Dates</span>
+  <h2 class="stitle">Strings, Numbers, Dates, Math, JSON</h2>
+
+  <div class="subhead">🔹 Strings</div>
+  <pre><span class="kw">const</span> name = <span class="st">"Raj Gahoi"</span>;
+name.length;                 <span class="cm">// 9</span>
+name.toUpperCase();           <span class="cm">// "RAJ GAHOI"</span>
+name.slice(<span class="st">0</span>,<span class="st">3</span>);              <span class="cm">// "Raj"</span>
+name.includes(<span class="st">"Gahoi"</span>);        <span class="cm">// true</span>
+name.split(<span class="st">' '</span>);                <span class="cm">// ["Raj","Gahoi"]</span>
+name.trim();                  <span class="cm">// removes whitespace from both ends</span>
+name.replace(<span class="st">"Raj"</span>, <span class="st">"Mr."</span>);   <span class="cm">// "Mr. Gahoi"</span>
+
+<span class="cm">// Template literals (ES6) — much cleaner than concatenation</span>
+<span class="kw">const</span> greeting = <span class="cm">`Hello, ${name}! You are ${<span class="st">20</span>} years old.`</span>;</pre>
+
+  <div class="subhead">🔹 Numbers & Math</div>
+  <pre>Number(<span class="st">"42"</span>);       <span class="cm">// 42 — explicit conversion</span>
+parseInt(<span class="st">"42px"</span>);   <span class="cm">// 42 — parses until non-digit</span>
+(<span class="st">3.14159</span>).toFixed(<span class="st">2</span>); <span class="cm">// "3.14"</span>
+Number.isInteger(<span class="st">5</span>);  <span class="cm">// true</span>
+Math.max(<span class="st">1</span>,<span class="st">5</span>,<span class="st">3</span>);    <span class="cm">// 5</span>
+Math.floor(<span class="st">4.7</span>);     <span class="cm">// 4</span>
+Math.round(<span class="st">4.5</span>);     <span class="cm">// 5</span>
+Math.random();          <span class="cm">// 0 to 1 (exclusive)</span>
+Math.floor(Math.random() * <span class="st">10</span>); <span class="cm">// random integer 0-9</span></pre>
+  <div class="box warning"><h4>⚠️ Floating point precision (famous JS quirk)</h4><span class="mono">0.1 + 0.2 === 0.3</span> → <b>false</b>! Result is 0.30000000000000004 due to how floating-point binary math works. Fix: <span class="mono">Math.abs(a-b) &lt; Number.EPSILON</span> ya <span class="mono">toFixed()</span> se compare karo.</div>
+
+  <div class="subhead">🔹 Dates</div>
+  <pre><span class="kw">const</span> now = <span class="kw">new</span> Date();
+now.getFullYear();    <span class="cm">// 2026</span>
+now.getMonth();        <span class="cm">// 0-11 (Jan=0!) — common off-by-one bug</span>
+now.getDate();          <span class="cm">// day of month</span>
+now.toISOString();      <span class="cm">// "2026-07-27T10:30:00.000Z" — standard format for APIs</span></pre>
+  <div class="box tip"><h4>💡 Pro tip</h4>Native Date API clunky hai — real projects me <span class="mono">date-fns</span> ya <span class="mono">dayjs</span> library use karo formatting/timezone ke liye.</div>
+
+  <div class="subhead">🔹 JSON</div>
+  <pre><span class="kw">const</span> obj = { name: <span class="st">"Raj"</span>, age: <span class="st">20</span> };
+<span class="kw">const</span> str = JSON.stringify(obj);  <span class="cm">// '{"name":"Raj","age":20}' — object → string</span>
+<span class="kw">const</span> back = JSON.parse(str);      <span class="cm">// {name:"Raj",age:20} — string → object</span></pre>
+  <p style="font-size:.86rem;color:var(--muted)">API se data JSON string me aata hai — <span class="mono">fetch(...).then(r =&gt; r.json())</span> internally <span class="mono">JSON.parse</span> hi kar raha hota hai. localStorage me sirf strings store ho sakti hain, isliye objects save karne se pehle <span class="mono">stringify</span> karna padta hai.</p>
+</section>
+
+<!-- ============ 11 ERROR HANDLING ============ -->
+<section id="errors" class="reveal">
+  <span class="eyebrow">11 · Error Handling</span>
+  <h2 class="stitle">Error Handling</h2>
+  <pre><span class="kw">try</span> {
+  <span class="kw">const</span> data = JSON.parse(invalidJson); <span class="cm">// might throw</span>
+} <span class="kw">catch</span> (error) {
+  console.error(<span class="st">'Failed:'</span>, error.message);
+} <span class="kw">finally</span> {
+  console.log(<span class="st">'This always runs'</span>); <span class="cm">// cleanup — runs whether error or not</span>
+}</pre>
+
+  <div class="subhead">🔹 Custom Errors — real project pattern</div>
+  <pre><span class="kw">class</span> ValidationError <span class="kw">extends</span> Error {
+  <span class="fn">constructor</span>(message, field) {
+    <span class="kw">super</span>(message);
+    this.name = <span class="st">'ValidationError'</span>;
+    this.field = field;
+  }
+}
+
+<span class="kw">function</span> <span class="fn">validateAge</span>(age) {
+  <span class="kw">if</span> (age &lt; <span class="st">0</span>) <span class="kw">throw new</span> ValidationError(<span class="st">'Age cannot be negative'</span>, <span class="st">'age'</span>);
+  <span class="kw">return</span> age;
+}
+
+<span class="kw">try</span> {
+  <span class="fn">validateAge</span>(-<span class="st">5</span>);
+} <span class="kw">catch</span> (e) {
+  <span class="kw">if</span> (e <span class="kw">instanceof</span> ValidationError) {
+    console.log(<span class="cm">`Invalid field: ${e.field}`</span>);
+  }
+}</pre>
+  <div class="box important"><h4>⭐ Why custom errors matter in real projects</h4>Alag-alag error types (ValidationError, NetworkError, AuthError) se code specific handling kar sakta hai — jaise validation error par form field highlight karo, auth error par login page bhejo.</div>
+  <div class="box warning"><h4>⚠️ Common mistake</h4>Async code me try/catch bhoolna — <span class="mono">await fetch()</span> fail ho sakta hai (network down), bina try/catch ke poori app crash ho sakti hai (unhandled promise rejection).</div>
+</section>
+
+<!-- ============ 12 MODULES ============ -->
+<section id="modules" class="reveal">
+  <span class="eyebrow">12 · Modules</span>
+  <h2 class="stitle">Modules</h2>
+  <p class="sdesc"><b>Why modules exist:</b> Poora code ek hi file me likhna unmanageable ho jaata hai, aur global scope pollute hota hai (naming clashes). Modules code ko alag files me tod kar explicitly export/import karne dete hain.</p>
+
+  <div class="subhead">🔹 CommonJS (Node.js traditional)</div>
+  <pre><span class="cm">// math.js</span>
+<span class="kw">function</span> <span class="fn">add</span>(a,b) { <span class="kw">return</span> a+b; }
+module.exports = { add };
+
+<span class="cm">// app.js</span>
+<span class="kw">const</span> { add } = require(<span class="st">'./math'</span>);</pre>
+
+  <div class="subhead">🔹 ES Modules (modern standard, browser + Node)</div>
+  <pre><span class="cm">// math.js</span>
+<span class="kw">export function</span> <span class="fn">add</span>(a,b) { <span class="kw">return</span> a+b; }
+<span class="kw">export default function</span> <span class="fn">multiply</span>(a,b) { <span class="kw">return</span> a*b; }
+
+<span class="cm">// app.js</span>
+<span class="kw">import</span> multiply, { add } <span class="kw">from</span> <span class="st">'./math.js'</span>;</pre>
+
+  <div class="subhead">🔹 Dynamic Import & Tree Shaking</div>
+  <pre><span class="cm">// Load a module only when needed (code splitting)</span>
+<span class="kw">const</span> module = <span class="kw">await</span> import(<span class="st">'./heavyFeature.js'</span>);</pre>
+  <div class="box tip"><h4>💡 Tree Shaking</h4>Modern bundlers (Vite/Webpack) unused exports ko automatically final bundle se hata dete hain agar tum ES Modules (named exports) use karo — isliye bundle size chhota rehta hai. CommonJS ke saath tree shaking properly kaam nahi karta.</div>
+</section>
+
+<!-- ============ 13 DOM & EVENTS ============ -->
+<section id="dom" class="reveal">
+  <span class="eyebrow">13 · DOM & Events</span>
+  <h2 class="stitle">DOM, Events & Browser APIs</h2>
+  <p class="sdesc">DOM (Document Object Model) HTML ka in-memory tree representation hai — JS isi tree ko padh/badal sakta hai, jisse page update hota hai.</p>
+
+  <div class="subhead">🔹 Selecting & Modifying Elements</div>
+  <pre><span class="kw">const</span> el = document.querySelector(<span class="st">'.card'</span>);   <span class="cm">// first match</span>
+<span class="kw">const</span> all = document.querySelectorAll(<span class="st">'.card'</span>); <span class="cm">// NodeList of all matches</span>
+el.textContent = <span class="st">'New text'</span>;
+el.classList.add(<span class="st">'active'</span>);
+el.style.color = <span class="st">'red'</span>;
+el.setAttribute(<span class="st">'data-id'</span>, <span class="st">'5'</span>);</pre>
+
+  <div class="subhead">🔹 Events</div>
+  <pre><span class="kw">const</span> btn = document.querySelector(<span class="st">'#save'</span>);
+btn.addEventListener(<span class="st">'click'</span>, (e) =&gt; {
+  e.preventDefault();      <span class="cm">// stops default behaviour (form submit, link navigate)</span>
+  console.log(<span class="st">'clicked'</span>, e.target);
+});</pre>
+
+  <div class="subhead">🔹 Event Bubbling & Delegation (important real-project pattern)</div>
+  <pre><span class="cm">// Instead of adding a listener to EVERY button (expensive if 1000s of items):</span>
+document.querySelector(<span class="st">'#list'</span>).addEventListener(<span class="st">'click'</span>, (e) =&gt; {
+  <span class="kw">if</span> (e.target.matches(<span class="st">'.delete-btn'</span>)) {
+    <span class="fn">deleteItem</span>(e.target.dataset.id);
+  }
+});
+<span class="cm">// Events "bubble up" from child to parent — so ONE listener on the parent</span>
+<span class="cm">// catches clicks on ALL children, even ones added LATER dynamically.</span></pre>
+  <div class="box important"><h4>⭐ Why event delegation matters</h4>Dynamic lists (chat messages, todo items) me naye elements add hote rehte hain — unpar seedha listener lagane se woh listener nahi milega. Delegation se parent ek hi listener rakhta hai jo hamesha kaam karta hai, chahe child kabhi bhi add ho.</div>
+
+  <div class="subhead">🔹 Browser APIs — fetch, DOM ke bahar ki cheezein</div>
+  <pre><span class="kw">const</span> res = <span class="kw">await</span> fetch(<span class="st">'https://api.example.com/users'</span>);
+<span class="kw">const</span> users = <span class="kw">await</span> res.json();</pre>
+</section>
+
+<!-- ============ 14 STORAGE ============ -->
+<section id="storage" class="reveal">
+  <span class="eyebrow">14 · Storage</span>
+  <h2 class="stitle">Browser Storage</h2>
+  <div class="card"><table>
+    <tr><th>Storage</th><th>Capacity</th><th>Persists?</th><th>Sent to server?</th></tr>
+    <tr><td>localStorage</td><td>~5-10MB</td><td>Forever (until cleared)</td><td>No</td></tr>
+    <tr><td>sessionStorage</td><td>~5-10MB</td><td>Tab close tak</td><td>No</td></tr>
+    <tr><td>Cookies</td><td>~4KB</td><td>Configurable expiry</td><td>Yes, every request</td></tr>
+    <tr><td>IndexedDB</td><td>Much larger (100s of MB)</td><td>Forever</td><td>No</td></tr>
+  </table></div>
+  <pre>localStorage.setItem(<span class="st">'theme'</span>, <span class="st">'dark'</span>);
+localStorage.getItem(<span class="st">'theme'</span>);     <span class="cm">// "dark"</span>
+localStorage.removeItem(<span class="st">'theme'</span>);
+<span class="cm">// Objects must be stringified first:</span>
+localStorage.setItem(<span class="st">'user'</span>, JSON.stringify({name:<span class="st">'Raj'</span>}));
+<span class="kw">const</span> user = JSON.parse(localStorage.getItem(<span class="st">'user'</span>));</pre>
+  <div class="box warning"><h4>⚠️ Never store secrets in localStorage</h4>JS-accessible storage XSS attacks se readable hai — tokens/passwords yahan store karna security risk hai. Sensitive tokens ke liye httpOnly cookies better hain.</div>
+</section>
+
+<!-- ============ 15 ASYNC & EVENT LOOP ============ -->
+<section id="async" class="reveal">
+  <span class="eyebrow">15 · Async JavaScript</span>
+  <h2 class="stitle">Async JS & The Event Loop</h2>
+  <p class="sdesc"><b>Why this exists:</b> JavaScript <b>single-threaded</b> hai — ek waqt me sirf ek cheez chal sakti hai. Agar API call ka response 3 second lage aur JS "wait" kare, poori website 3 second ke liye freeze ho jaayegi! Async JS isi problem ko solve karta hai — "kaam background me chalne do, jab ready ho tab bata dena."</p>
+
+  <div class="subhead">🔹 Evolution: Callback → Promise → async/await</div>
+  <pre><span class="cm">// 1. CALLBACKS (old way) — leads to "Callback Hell" when nested</span>
+<span class="fn">getUser</span>(id, (user) =&gt; {
+  <span class="fn">getPosts</span>(user.id, (posts) =&gt; {
+    <span class="fn">getComments</span>(posts[<span class="st">0</span>].id, (comments) =&gt; {
+      console.log(comments); <span class="cm">// deeply nested — hard to read/maintain</span>
+    });
+  });
+});
+
+<span class="cm">// 2. PROMISES — flattens the nesting with .then() chaining</span>
+<span class="fn">getUser</span>(id)
+  .then(user =&gt; <span class="fn">getPosts</span>(user.id))
+  .then(posts =&gt; <span class="fn">getComments</span>(posts[<span class="st">0</span>].id))
+  .then(comments =&gt; console.log(comments))
+  .catch(err =&gt; console.error(err));
+
+<span class="cm">// 3. ASYNC/AWAIT (modern) — looks synchronous, easiest to read</span>
+<span class="kw">async function</span> <span class="fn">loadData</span>() {
+  <span class="kw">try</span> {
+    <span class="kw">const</span> user = <span class="kw">await</span> <span class="fn">getUser</span>(id);
+    <span class="kw">const</span> posts = <span class="kw">await</span> <span class="fn">getPosts</span>(user.id);
+    <span class="kw">const</span> comments = <span class="kw">await</span> <span class="fn">getComments</span>(posts[<span class="st">0</span>].id);
+    console.log(comments);
+  } <span class="kw">catch</span> (err) {
+    console.error(err);
+  }
+}</pre>
+  <p style="font-size:.86rem;color:var(--muted)"><b>Internally:</b> async/await Promises ka hi "syntactic sugar" hai — engine ke andar exactly wahi promise chain ban rahi hoti hai, bas likhna aur padhna easier ho gaya hai.</p>
+
+  <div class="subhead">🔹 Promise states & creation</div>
+  <pre><span class="kw">const</span> promise = <span class="kw">new</span> Promise((resolve, reject) =&gt; {
+  <span class="kw">const</span> success = <span class="kw">true</span>;
+  <span class="kw">if</span> (success) resolve(<span class="st">'Data loaded'</span>);
+  <span class="kw">else</span> reject(<span class="st">'Failed'</span>);
+});
+<span class="cm">// A promise is always in ONE of 3 states: pending → fulfilled OR rejected</span></pre>
+
+  <div class="subhead">🔹 Promise.all, allSettled, race</div>
+  <pre><span class="kw">const</span> [users, posts] = <span class="kw">await</span> Promise.all([<span class="fn">getUsers</span>(), <span class="fn">getPosts</span>()]);
+<span class="cm">// runs both in PARALLEL, waits for both. If ANY fails, whole thing rejects.</span>
+
+<span class="kw">const</span> results = <span class="kw">await</span> Promise.allSettled([p1, p2, p3]);
+<span class="cm">// waits for ALL, regardless of success/failure — each result has {status, value/reason}</span>
+
+<span class="kw">const</span> fastest = <span class="kw">await</span> Promise.race([p1, p2]);
+<span class="cm">// resolves/rejects as soon as the FIRST one settles</span></pre>
+
+  <div class="subhead">🔹 THE EVENT LOOP — how async actually works internally</div>
+  <div class="ascii">┌─────────────┐
+│  Call Stack │ ◀── your synchronous code runs here, one frame at a time
+└─────────────┘
+      │  (when stack is EMPTY, event loop checks queues)
+      ▼
+┌───────────────────────┐      ┌──────────────────────────┐
+│  Microtask Queue       │      │  Macrotask (Callback)    │
+│  (Promises, .then,     │ ───▶ │  Queue (setTimeout,      │
+│  queueMicrotask)       │ ALL  │  setInterval, DOM events)│
+│  runs COMPLETELY first │ done │  runs ONE task, then      │
+│                        │      │  checks microtasks again │
+└───────────────────────┘      └──────────────────────────┘</div>
+  <pre><span class="fn">console</span>.log(<span class="st">'1'</span>);                          <span class="cm">// synchronous — runs immediately</span>
+setTimeout(() =&gt; console.log(<span class="st">'2'</span>), <span class="st">0</span>);   <span class="cm">// macrotask — queued for LATER</span>
+Promise.resolve().then(() =&gt; console.log(<span class="st">'3'</span>)); <span class="cm">// microtask — queued, but HIGHER priority than macrotask</span>
+<span class="fn">console</span>.log(<span class="st">'4'</span>);                          <span class="cm">// synchronous</span>
+
+<span class="cm">// Output: 1, 4, 3, 2</span>
+<span class="cm">// Why: sync code (1,4) runs first. Then ALL microtasks (3). Then macrotasks (2).</span></pre>
+  <div class="box important"><h4>⭐ Interview gold — why this matters</h4>Ye samajhna React re-renders, debouncing, aur "why did my setTimeout not run exactly at 0ms" jaise bugs debug karne ke liye critical hai. Microtasks (Promises) hamesha macrotasks (setTimeout) se pehle chalte hain, chahe setTimeout ka delay 0 hi kyun na ho.</div>
+
+  <div class="subhead">🔹 Fetch & AbortController</div>
+  <pre><span class="kw">const</span> controller = <span class="kw">new</span> AbortController();
+<span class="kw">const</span> timeoutId = setTimeout(() =&gt; controller.abort(), <span class="st">5000</span>); <span class="cm">// cancel after 5s</span>
+
+<span class="kw">try</span> {
+  <span class="kw">const</span> res = <span class="kw">await</span> fetch(url, { signal: controller.signal });
+  clearTimeout(timeoutId);
+} <span class="kw">catch</span> (e) {
+  <span class="kw">if</span> (e.name === <span class="st">'AbortError'</span>) console.log(<span class="st">'Request timed out'</span>);
+}</pre>
+  <div class="box shortcut"><h4>⏩ Pro Tip</h4>Search/autocomplete inputs me AbortController use karo purani, ab-irrelevant API requests cancel karne ke liye jab user tez type kare — warna race condition ho sakti hai (purani response naye se baad me aa jaaye).</div>
+</section>
+
+<!-- ============ 16 OOP ============ -->
+<section id="oop" class="reveal">
+  <span class="eyebrow">16 · OOP</span>
+  <h2 class="stitle">Object-Oriented JavaScript</h2>
+  <pre><span class="kw">class</span> Animal {
+  <span class="fn">constructor</span>(name) {
+    this.name = name; <span class="cm">// instance property</span>
+  }
+  <span class="fn">speak</span>() {           <span class="cm">// method — shared via prototype, not copied per instance</span>
+    <span class="kw">return</span> <span class="cm">`${this.name} makes a sound`</span>;
+  }
+}
+
+<span class="kw">class</span> Dog <span class="kw">extends</span> Animal {   <span class="cm">// inheritance</span>
+  <span class="fn">speak</span>() {                 <span class="cm">// method OVERRIDING (polymorphism)</span>
+    <span class="kw">return</span> <span class="cm">`${this.name} barks`</span>;
+  }
+}
+
+<span class="kw">const</span> d = <span class="kw">new</span> Dog(<span class="st">'Tommy'</span>);
+d.speak(); <span class="cm">// "Tommy barks"</span></pre>
+  <div class="grid g2">
+    <div class="box definition"><h4>Encapsulation</h4>Data aur uspar operate karne wale methods ko ek unit (class) me bundle karna. Private fields: <span class="mono">#balance</span> (ES2022) — sirf class ke andar accessible.</div>
+    <div class="box definition"><h4>Inheritance</h4><span class="mono">extends</span> se ek class doosri ki properties/methods "inherit" karti hai — code reuse.</div>
+    <div class="box definition"><h4>Polymorphism</h4>Same method name, different behavior per class (jaise upar <span class="mono">speak()</span> Dog me override hua).</div>
+    <div class="box definition"><h4>Abstraction</h4>Complex implementation ko chhupa kar simple interface expose karna (jaise <span class="mono">fetch()</span> — internal networking complexity hidden hai).</div>
+  </div>
+  <pre><span class="kw">class</span> BankAccount {
+  <span class="kw">#balance</span> = <span class="st">0</span>; <span class="cm">// private field (ES2022) — truly inaccessible outside class</span>
+  <span class="fn">deposit</span>(amount) { this.<span class="kw">#balance</span> += amount; }
+  <span class="fn">getBalance</span>() { <span class="kw">return</span> this.<span class="kw">#balance</span>; }
+}
+<span class="kw">const</span> acc = <span class="kw">new</span> BankAccount();
+acc.<span class="kw">#balance</span>; <span class="cm">// ❌ SyntaxError — can't access from outside!</span></pre>
+  <div class="box tip"><h4>💡 Real project use</h4>Classes React class components me (legacy), Node.js backend me models/services banane ke liye, aur kisi bhi domain modeling (User, Product, Order classes) ke liye use hoti hain.</div>
+</section>
+
+<!-- ============ 17 FUNCTIONAL PROGRAMMING ============ -->
+<section id="fp" class="reveal">
+  <span class="eyebrow">17 · Functional Programming</span>
+  <h2 class="stitle">Functional Programming</h2>
+  <div class="grid g2">
+    <div class="box definition"><h4>Pure Functions</h4>Same input → hamesha same output, koi side effects nahi (outside variables ko touch nahi karti). Testing aur debugging easy ho jaata hai.
+    <pre style="font-size:.74rem;margin-top:6px">// Pure
+function add(a,b) { return a+b; }
+// Impure — depends on external state
+let tax = 0.1;
+function addTax(price) { return price + price*tax; }</pre></div>
+    <div class="box definition"><h4>Immutability</h4>Data ko directly modify na karke, changes ke saath naya data banana. React state updates isi principle par based hain.</div>
+    <div class="box definition"><h4>Function Composition</h4>Chhote functions ko combine karke complex logic banana.
+    <pre style="font-size:.74rem;margin-top:6px">const compose = (f,g) => x => f(g(x));
+const shout = compose(s=>s+'!', s=>s.toUpperCase());
+shout('hi'); // "HI!"</pre></div>
+    <div class="box definition"><h4>Currying</h4>Multi-argument function ko single-argument functions ki chain me todna.
+    <pre style="font-size:.74rem;margin-top:6px">const add = a => b => a + b;
+add(2)(3); // 5 — useful for creating specialized functions</pre></div>
+  </div>
+  <div class="box tip"><h4>💡 Why FP matters in real projects</h4>Predictable, testable code. React/Redux dono heavily FP principles use karte hain (pure reducers, immutable updates) — isliye FP samajhna in libraries ko samajhna aasan bana deta hai.</div>
+</section>
+
+<!-- ============ 18 ADVANCED JS ============ -->
+<section id="advanced" class="reveal">
+  <span class="eyebrow">18 · Advanced JS</span>
+  <h2 class="stitle">Advanced JavaScript Internals</h2>
+
+  <div class="subhead">🔹 Hoisting — the real mechanism</div>
+  <pre>console.log(x); <span class="cm">// undefined (NOT an error!) — var is hoisted</span>
+<span class="kw">var</span> x = <span class="st">5</span>;
+
+console.log(y); <span class="cm">// ❌ ReferenceError — "Cannot access 'y' before initialization"</span>
+<span class="kw">let</span> y = <span class="st">5</span>;         <span class="cm">// let/const are hoisted too, but in the "Temporal Dead Zone" (TDZ)</span></pre>
+  <p style="font-size:.86rem;color:var(--muted)"><b>Internally:</b> JS engine 2 passes karta hai — pehle pass me saari declarations "memory me register" ho jaati hain (hoisting), doosre pass me actual execution hoti hai. <span class="mono">var</span> ko <span class="mono">undefined</span> se initialize kiya jaata hai turant, par <span class="mono">let/const</span> "uninitialized" state me rehte hain (TDZ) jab tak unki actual line na aaye.</p>
+
+  <div class="subhead">🔹 Execution Context & Call Stack</div>
+  <div class="ascii">function three() { console.log('three'); }
+function two() { three(); }
+function one() { two(); }
+one();
+
+Call Stack (grows/shrinks as functions call/return):
+┌──────────┐
+│  three() │  ← top of stack, executing now
+├──────────┤
+│  two()   │
+├──────────┤
+│  one()   │
+├──────────┤
+│  Global  │  ← always at the bottom
+└──────────┘</div>
+  <p style="font-size:.86rem;color:var(--muted)">Har function call ek naya "Execution Context" stack par push karta hai (apna scope, variables, 'this'). Function return hone par uska context pop ho jaata hai. Bohot deep recursion → stack "overflow" ho jaata hai.</p>
+
+  <div class="subhead">🔹 Garbage Collection & Memory Leaks</div>
+  <p style="font-size:.9rem;color:var(--muted);margin-bottom:8px">JS engine automatically memory free karta hai jab koi object ab "reachable" nahi rehta (kisi variable se reference nahi ho raha). Isko "Mark and Sweep" algorithm kehte hain.</p>
+  <pre><span class="cm">// Common memory leak — forgotten event listener/timer</span>
+<span class="kw">function</span> <span class="fn">setup</span>() {
+  <span class="kw">const</span> hugeData = <span class="kw">new</span> Array(<span class="st">1000000</span>).fill(<span class="st">'data'</span>);
+  document.addEventListener(<span class="st">'click'</span>, () =&gt; console.log(hugeData.length));
+  <span class="cm">// listener NEVER removed → hugeData can NEVER be garbage collected, even after component "unmounts"</span>
+}</pre>
+  <div class="box warning"><h4>⚠️ Common leak sources</h4>Forgotten setInterval/addEventListener, closures holding large data unnecessarily, detached DOM nodes still referenced in JS variables.</div>
+
+  <div class="subhead">🔹 WeakMap & WeakSet</div>
+  <pre><span class="kw">const</span> cache = <span class="kw">new</span> WeakMap();
+cache.set(someObject, <span class="st">'cached data'</span>);
+<span class="cm">// If someObject has no other references, it CAN still be garbage collected —</span>
+<span class="cm">// WeakMap doesn't prevent GC, unlike a normal Map. Great for caching without leaks.</span></pre>
+
+  <div class="subhead">🔹 Proxy & Reflect</div>
+  <pre><span class="kw">const</span> user = { name: <span class="st">'Raj'</span> };
+<span class="kw">const</span> proxy = <span class="kw">new</span> Proxy(user, {
+  get(target, prop) {
+    console.log(<span class="cm">`Reading ${prop}`</span>);
+    <span class="kw">return</span> Reflect.get(target, prop);
+  }
+});
+proxy.name; <span class="cm">// logs "Reading name", then returns "Raj"</span>
+<span class="cm">// Real use: Vue 3's reactivity system is built entirely on Proxy!</span></pre>
+
+  <div class="subhead">🔹 Generators & Iterators</div>
+  <pre><span class="kw">function*</span> <span class="fn">idGenerator</span>() {
+  <span class="kw">let</span> id = <span class="st">1</span>;
+  <span class="kw">while</span> (<span class="kw">true</span>) {
+    yield id++; <span class="cm">// pauses here, resumes on next .next() call</span>
+  }
+}
+<span class="kw">const</span> gen = <span class="fn">idGenerator</span>();
+gen.next().value; <span class="cm">// 1</span>
+gen.next().value; <span class="cm">// 2 — remembers where it left off!</span></pre>
+  <div class="box tip"><h4>💡 Real use</h4>Infinite scroll pagination, lazy sequences, custom iteration logic — generators "pause-able functions" hain.</div>
+
+  <div class="subhead">🔹 Destructuring & Template Literals recap</div>
+  <pre><span class="kw">const</span> { name, age = <span class="st">18</span> } = user; <span class="cm">// object destructuring with default</span>
+<span class="kw">const</span> [first, ...rest] = [<span class="st">1</span>,<span class="st">2</span>,<span class="st">3</span>]; <span class="cm">// array destructuring + rest</span>
+<span class="kw">function</span> <span class="fn">tag</span>(strings, ...values) { <span class="kw">return</span> strings.raw.join(<span class="st">'|'</span>); } <span class="cm">// tagged template</span>
+tag<span class="cm">`Hello ${name}`</span>;</pre>
+
+  <div class="box shortcut"><h4>⏩ Pro Tips — Chrome DevTools</h4>
+  <span class="mono">console.table(array)</span> — arrays ko readable table me dikhata hai.
+  <span class="mono">console.time('label')</span> / <span class="mono">console.timeEnd('label')</span> — code timing measure karo.
+  Performance tab → memory leaks detect karne ke liye heap snapshots compare karo.
+  Sources tab → breakpoints lagao, "Pause on exceptions" enable karo.</div>
+</section>
+
+<!-- ============ 19 DESIGN PATTERNS ============ -->
+<section id="patterns" class="reveal">
+  <span class="eyebrow">19 · Design Patterns</span>
+  <h2 class="stitle">Design Patterns & SOLID Principles</h2>
+
+  <div class="subhead">🔹 Module Pattern (using closures for privacy)</div>
+  <pre><span class="kw">const</span> Counter = (<span class="kw">function</span>() {
+  <span class="kw">let</span> count = <span class="st">0</span>; <span class="cm">// private — inaccessible from outside</span>
+  <span class="kw">return</span> {
+    increment: () =&gt; ++count,
+    getCount: () =&gt; count
+  };
+})();
+Counter.increment(); Counter.getCount(); <span class="cm">// 1</span></pre>
+
+  <div class="subhead">🔹 Singleton Pattern</div>
+  <pre><span class="kw">class</span> Database {
+  <span class="kw">static</span> #instance;
+  <span class="kw">static</span> <span class="fn">getInstance</span>() {
+    <span class="kw">if</span> (!Database.#instance) Database.#instance = <span class="kw">new</span> Database();
+    <span class="kw">return</span> Database.#instance; <span class="cm">// always the SAME instance</span>
+  }
+}</pre>
+
+  <div class="subhead">🔹 Observer Pattern (pub/sub — basis of events, React state, Redux)</div>
+  <pre><span class="kw">class</span> EventEmitter {
+  listeners = {};
+  <span class="fn">on</span>(event, callback) {
+    (this.listeners[event] ??= []).push(callback);
+  }
+  <span class="fn">emit</span>(event, data) {
+    (this.listeners[event] || []).forEach(cb =&gt; cb(data));
+  }
+}
+<span class="kw">const</span> emitter = <span class="kw">new</span> EventEmitter();
+emitter.on(<span class="st">'userLoggedIn'</span>, (user) =&gt; console.log(<span class="cm">`Welcome ${user.name}`</span>));
+emitter.emit(<span class="st">'userLoggedIn'</span>, {name:<span class="st">'Raj'</span>});</pre>
+  <div class="box important"><h4>⭐ This IS how the real world works</h4>DOM's <span class="mono">addEventListener</span>, Node's <span class="mono">EventEmitter</span>, React's state updates, Redux's subscribe — sab Observer pattern ka hi implementation hain.</div>
+
+  <div class="subhead">🔹 Factory Pattern</div>
+  <pre><span class="kw">function</span> <span class="fn">createUser</span>(type) {
+  <span class="kw">if</span> (type === <span class="st">'admin'</span>) <span class="kw">return</span> { role: <span class="st">'admin'</span>, permissions: [<span class="st">'all'</span>] };
+  <span class="kw">return</span> { role: <span class="st">'user'</span>, permissions: [<span class="st">'read'</span>] };
+}</pre>
+
+  <div class="subhead">🔹 SOLID Principles in JavaScript</div>
+  <div class="grid g2">
+    <div class="box tip"><h4>S — Single Responsibility</h4>Ek function/class sirf ek kaam kare. User validation aur user saving ko alag functions me rakho.</div>
+    <div class="box tip"><h4>O — Open/Closed</h4>Naya behavior add karne ke liye existing code modify na karo — extend karo (jaise class inheritance ya strategy pattern).</div>
+    <div class="box tip"><h4>L — Liskov Substitution</h4>Subclass ko parent class ki jagah use kiya ja sake bina kuch tode.</div>
+    <div class="box tip"><h4>I — Interface Segregation</h4>Chhote, specific interfaces behtar hain ek bade "do-everything" interface se.</div>
+    <div class="box tip"><h4>D — Dependency Inversion</h4>High-level modules low-level details par directly depend na karein — abstraction (jaise ek "api client" interface) ke through connect ho.</div>
+  </div>
+</section>
+
+<!-- ============ 20 CLEAN CODE & PERFORMANCE ============ -->
+<section id="cleanperf" class="reveal">
+  <span class="eyebrow">20 · Clean Code & Performance</span>
+  <h2 class="stitle">Clean Code & Performance Optimization</h2>
+  <div class="grid g2">
+    <div class="box tip"><h4>💡 Naming</h4>Descriptive names: <span class="mono">isLoading</span> not <span class="mono">flag</span>, <span class="mono">calculateTotalPrice()</span> not <span class="mono">calc()</span>.</div>
+    <div class="box tip"><h4>💡 Small functions</h4>Ek function ek kaam kare, 20 lines se zyada ho to break karo.</div>
+    <div class="box tip"><h4>💡 Avoid magic numbers</h4><span class="mono">const MAX_RETRIES = 3</span> not bare <span class="mono">3</span> scattered in code.</div>
+    <div class="box tip"><h4>💡 Early returns</h4>Deep nesting avoid karo — guard clauses use karo (<span class="mono">if (!user) return;</span>).</div>
+  </div>
+  <div class="subhead">🔹 Performance — Debounce & Throttle (real project must-knows)</div>
+  <pre><span class="cm">// Debounce — waits until user STOPS typing (search boxes)</span>
+<span class="kw">function</span> <span class="fn">debounce</span>(fn, delay) {
+  <span class="kw">let</span> timer;
+  <span class="kw">return function</span>(...args) {
+    clearTimeout(timer);
+    timer = setTimeout(() =&gt; fn(...args), delay);
+  };
+}
+<span class="kw">const</span> search = <span class="fn">debounce</span>((query) =&gt; <span class="fn">callAPI</span>(query), <span class="st">300</span>);
+
+<span class="cm">// Throttle — runs at most once every X ms (scroll/resize handlers)</span>
+<span class="kw">function</span> <span class="fn">throttle</span>(fn, limit) {
+  <span class="kw">let</span> inThrottle;
+  <span class="kw">return function</span>(...args) {
+    <span class="kw">if</span> (!inThrottle) { fn(...args); inThrottle = <span class="kw">true</span>; setTimeout(() =&gt; inThrottle = <span class="kw">false</span>, limit); }
+  };
+}</pre>
+  <div class="box exam"><h4>🎯 Debounce vs Throttle — quick call</h4>Debounce → "user ruk jaaye tab chalao" (search, form validation). Throttle → "har X ms me ek baar zaroor chalao" (scroll tracking, button spam prevention).</div>
+</section>
+
+<!-- ============ 21 SECURITY ============ -->
+<section id="security" class="reveal">
+  <span class="eyebrow">21 · Security</span>
+  <h2 class="stitle">JavaScript Security</h2>
+  <div class="grid g2">
+    <div class="box warning"><h4>⚠️ XSS (Cross-Site Scripting)</h4>Attacker user input ke through malicious script inject karta hai. <span class="mono">innerHTML = userInput</span> DANGEROUS hai — user agar <span class="mono">&lt;script&gt;</span> tag likh de to woh chal jaayega. Fix: <span class="mono">textContent</span> use karo, ya input ko sanitize karo (DOMPurify library).</div>
+    <div class="box warning"><h4>⚠️ CSRF (Cross-Site Request Forgery)</h4>Attacker user ke logged-in session ka use karke unauthorized request bhejta hai. Fix: CSRF tokens, SameSite cookies.</div>
+    <div class="box warning"><h4>⚠️ Prototype Pollution</h4><span class="mono">obj.__proto__.polluted = true</span> jaisa attack Object.prototype ko globally corrupt kar sakta hai. Fix: <span class="mono">Object.create(null)</span> use karo untrusted data ke liye, ya <span class="mono">Object.freeze(Object.prototype)</span>.</div>
+    <div class="box tip"><h4>💡 CSP (Content Security Policy)</h4>HTTP header jo browser ko batata hai kaunsa script/resource load karna allowed hai — inline scripts aur unknown domains block kar deta hai.</div>
+  </div>
+  <div class="box important"><h4>⭐ Golden rule</h4>Kabhi bhi user input ko directly trust/render mat karo. Hamesha sanitize/escape karo, aur sensitive operations server-side validate karo (client-side validation sirf UX ke liye hai, security ke liye nahi — client-side code kabhi bhi bypass ho sakta hai).</div>
+</section>
+
+<!-- ============ 22 TESTING ============ -->
+<section id="testing" class="reveal">
+  <span class="eyebrow">22 · Testing</span>
+  <h2 class="stitle">Testing JavaScript</h2>
+  <div class="grid g2">
+    <div class="card"><b>Unit Testing</b><p style="font-size:.82rem;color:var(--muted);margin-top:6px">Ek function/module ko isolation me test karna.</p></div>
+    <div class="card"><b>Integration Testing</b><p style="font-size:.82rem;color:var(--muted);margin-top:6px">Multiple parts saath me sahi kaam kar rahe hain, check karna.</p></div>
+    <div class="card"><b>E2E Testing</b><p style="font-size:.82rem;color:var(--muted);margin-top:6px">Poore user flow ko real browser me test karna (Playwright/Cypress).</p></div>
+  </div>
+  <pre><span class="cm">// Jest/Vitest example</span>
+<span class="kw">function</span> <span class="fn">add</span>(a,b) { <span class="kw">return</span> a+b; }
+
+<span class="fn">test</span>(<span class="st">'adds 2 + 3 to equal 5'</span>, () =&gt; {
+  <span class="fn">expect</span>(<span class="fn">add</span>(<span class="st">2</span>,<span class="st">3</span>)).toBe(<span class="st">5</span>);
+});
+
+<span class="cm">// Mocking — fake a dependency so tests don't hit real APIs</span>
+jest.mock(<span class="st">'./api'</span>);
+<span class="fn">getUsers</span>.mockResolvedValue([{name:<span class="st">'Raj'</span>}]);</pre>
+  <div class="box tip"><h4>💡 Why test pure functions first</h4>Pure functions (same input → same output, no side effects) test karna sabse easy hai — koi mocking ki zaroorat nahi.</div>
+</section>
+
+<!-- ============ 23 NODE.JS ============ -->
+<section id="node" class="reveal">
+  <span class="eyebrow">23 · Node.js</span>
+  <h2 class="stitle">Node.js Basics</h2>
+  <p class="sdesc">Node.js JS ko server par chalata hai — same language, backend ke liye. V8 engine ke upar bana hai, plus file system/network jaisi server-side capabilities.</p>
+  <pre><span class="kw">const</span> http = require(<span class="st">'http'</span>);
+<span class="kw">const</span> server = http.createServer((req, res) =&gt; {
+  res.writeHead(<span class="st">200</span>, {<span class="st">'Content-Type'</span>: <span class="st">'text/plain'</span>});
+  res.end(<span class="st">'Hello from Node!'</span>);
+});
+server.listen(<span class="st">3000</span>);
+
+<span class="cm">// File system (async)</span>
+<span class="kw">const</span> fs = require(<span class="st">'fs/promises'</span>);
+<span class="kw">const</span> data = <span class="kw">await</span> fs.readFile(<span class="st">'data.txt'</span>, <span class="st">'utf-8'</span>);</pre>
+  <div class="box tip"><h4>💡 Browser vs Node differences</h4>Browser has: DOM, window, fetch (built-in), localStorage. Node has: file system, process, require/module.exports (or ESM), no DOM at all.</div>
+</section>
+
+<!-- ============ 24 BUILD TOOLS ============ -->
+<section id="buildtools" class="reveal">
+  <span class="eyebrow">24 · Build Tools</span>
+  <h2 class="stitle">Build Tools</h2>
+  <div class="grid g3">
+    <div class="card"><b>npm / pnpm / yarn</b><p style="font-size:.82rem;color:var(--muted);margin-top:6px">Package managers — pnpm sabse fast + disk-efficient hai (shared storage), yarn Facebook ka alternative.</p></div>
+    <div class="card"><b>Babel</b><p style="font-size:.82rem;color:var(--muted);margin-top:6px">Naya JS syntax (ES2025+) ko purane browsers ke compatible JS me "transpile" karta hai.</p></div>
+    <div class="card"><b>Vite</b><p style="font-size:.82rem;color:var(--muted);margin-top:6px">Modern, super-fast dev server + bundler — ES modules native use karta hai dev me, esbuild se fast.</p></div>
+    <div class="card"><b>Webpack</b><p style="font-size:.82rem;color:var(--muted);margin-top:6px">Purana, highly configurable bundler — bade legacy projects me abhi bhi common.</p></div>
+    <div class="card"><b>ESLint</b><p style="font-size:.82rem;color:var(--muted);margin-top:6px">Code me bugs/style issues automatically detect karta hai — "Missed a case in switch?" jaisi cheezein pakadta hai.</p></div>
+    <div class="card"><b>Prettier</b><p style="font-size:.82rem;color:var(--muted);margin-top:6px">Code ko automatically consistent format me likh deta hai — teams me style debates khatam karta hai.</p></div>
+  </div>
+</section>
+
+<!-- ============ 25 ARCHITECTURE ============ -->
+<section id="architecture" class="reveal">
+  <span class="eyebrow">25 · Architecture</span>
+  <h2 class="stitle">JavaScript Project Architecture</h2>
+  <pre>src/
+  api/            <span class="cm">// centralized fetch calls</span>
+    client.js
+    userApi.js
+  utils/          <span class="cm">// pure, reusable helper functions</span>
+    formatDate.js
+    validators.js
+  components/     <span class="cm">// UI pieces</span>
+  config/         <span class="cm">// environment-specific settings</span>
+  .env             <span class="cm">// secrets/environment variables — NEVER commit to git</span>
+  index.js</pre>
+  <div class="grid g2">
+    <div class="box tip"><h4>💡 API Layer</h4>Saari fetch calls ek jagah centralize karo — URL badle to ek hi jagah change karna padega, sab jagah nahi.</div>
+    <div class="box tip"><h4>💡 Environment Variables</h4><span class="mono">.env</span> file me API keys/URLs rakho, code me hardcode mat karo — different environments (dev/prod) ke liye different values.</div>
+    <div class="box tip"><h4>💡 Validation Layer</h4>User input ko ek jagah validate karo (jaise zod/yup library se) — inconsistent scattered validation se bugs aate hain.</div>
+    <div class="box tip"><h4>💡 Logging</h4>Production me <span class="mono">console.log</span> ki jagah proper logging library (Winston, Pino) use karo — levels (error/warn/info), aur remote log services ke saath integrate.</div>
+  </div>
+</section>
+
+<!-- ============ 26 CAPSTONE PROJECT ============ -->
+<section id="capstone" class="reveal">
+  <span class="eyebrow">🏆 26 · Capstone Project</span>
+  <h2 class="stitle">Build an Expense Tracker — From Scratch</h2>
+  <p class="sdesc">Poori notebook ke concepts ek real vanilla JS app me use karte hain — koi framework nahi, sirf pure JavaScript.</p>
+
+  <div class="subhead">📁 Step 1 — Plan & Folder Structure</div>
+  <pre>expense-tracker/
+  index.html
+  style.css
+  js/
+    storage.js    <span class="cm">// localStorage save/load</span>
+    render.js      <span class="cm">// DOM updates</span>
+    app.js         <span class="cm">// main logic, event listeners</span></pre>
+
+  <div class="subhead">💾 Step 2 — Storage Module (closures + localStorage)</div>
+  <pre><span class="cm">// storage.js — module pattern for encapsulation</span>
+<span class="kw">const</span> Storage = (<span class="kw">function</span>() {
+  <span class="kw">const</span> KEY = <span class="st">'expenses'</span>;
+  <span class="kw">return</span> {
+    <span class="fn">getAll</span>() { <span class="kw">return</span> JSON.parse(localStorage.getItem(KEY)) || []; },
+    <span class="fn">save</span>(expenses) { localStorage.setItem(KEY, JSON.stringify(expenses)); }
+  };
+})();</pre>
+
+  <div class="subhead">➕ Step 3 — Core Logic (pure functions + array methods)</div>
+  <pre><span class="cm">// app.js</span>
+<span class="kw">let</span> expenses = Storage.getAll();
+
+<span class="kw">function</span> <span class="fn">addExpense</span>(title, amount) {
+  <span class="kw">const</span> expense = { id: Date.now(), title, amount: Number(amount) };
+  expenses = [...expenses, expense]; <span class="cm">// immutability — new array, not pushed to old one</span>
+  Storage.save(expenses);
+  <span class="fn">render</span>();
+}
+
+<span class="kw">function</span> <span class="fn">deleteExpense</span>(id) {
+  expenses = expenses.filter(e =&gt; e.id !== id); <span class="cm">// non-mutating array method</span>
+  Storage.save(expenses);
+  <span class="fn">render</span>();
+}
+
+<span class="kw">function</span> <span class="fn">getTotal</span>() {
+  <span class="kw">return</span> expenses.reduce((sum, e) =&gt; sum + e.amount, <span class="st">0</span>); <span class="cm">// reduce in action</span>
+}</pre>
+
+  <div class="subhead">🎨 Step 4 — Rendering (DOM manipulation + event delegation)</div>
+  <pre><span class="kw">function</span> <span class="fn">render</span>() {
+  <span class="kw">const</span> list = document.querySelector(<span class="st">'#expense-list'</span>);
+  list.innerHTML = expenses.map(e =&gt; <span class="cm">`
+    &lt;li data-id="${e.id}"&gt;
+      ${e.title} — ₹${e.amount}
+      &lt;button class="delete-btn"&gt;✕&lt;/button&gt;
+    &lt;/li&gt;
+  `</span>).join(<span class="st">''</span>);
+  document.querySelector(<span class="st">'#total'</span>).textContent = <span class="cm">`₹${getTotal()}`</span>;
+}
+
+<span class="cm">// Event delegation — ONE listener handles delete for ALL items, even future ones</span>
+document.querySelector(<span class="st">'#expense-list'</span>).addEventListener(<span class="st">'click'</span>, (e) =&gt; {
+  <span class="kw">if</span> (e.target.matches(<span class="st">'.delete-btn'</span>)) {
+    <span class="kw">const</span> id = Number(e.target.closest(<span class="st">'li'</span>).dataset.id);
+    <span class="fn">deleteExpense</span>(id);
+  }
+});</pre>
+
+  <div class="subhead">📝 Step 5 — Form Handling + Error Handling</div>
+  <pre>document.querySelector(<span class="st">'#expense-form'</span>).addEventListener(<span class="st">'submit'</span>, (e) =&gt; {
+  e.preventDefault();
+  <span class="kw">const</span> title = document.querySelector(<span class="st">'#title'</span>).value.trim();
+  <span class="kw">const</span> amount = document.querySelector(<span class="st">'#amount'</span>).value;
+
+  <span class="kw">try</span> {
+    <span class="kw">if</span> (!title) <span class="kw">throw new</span> Error(<span class="st">'Title required'</span>);
+    <span class="kw">if</span> (Number(amount) &lt;= <span class="st">0</span>) <span class="kw">throw new</span> Error(<span class="st">'Amount must be positive'</span>);
+    <span class="fn">addExpense</span>(title, amount);
+    e.target.reset();
+  } <span class="kw">catch</span> (err) {
+    alert(err.message);
+  }
+});</pre>
+
+  <div class="subhead">🌐 Step 6 — Bonus: Async feature (fetch exchange rate)</div>
+  <pre><span class="kw">async function</span> <span class="fn">convertToUSD</span>(inrAmount) {
+  <span class="kw">try</span> {
+    <span class="kw">const</span> res = <span class="kw">await</span> fetch(<span class="st">'https://api.exchangerate-api.com/v4/latest/INR'</span>);
+    <span class="kw">const</span> data = <span class="kw">await</span> res.json();
+    <span class="kw">return</span> (inrAmount * data.rates.USD).toFixed(<span class="st">2</span>);
+  } <span class="kw">catch</span> {
+    <span class="kw">return</span> <span class="st">null</span>; <span class="cm">// graceful fallback if API/network fails</span>
+  }
+}</pre>
+
+  <div class="box remember"><h4>🧠 What this project proved you can do</h4>Module pattern for encapsulation · immutable state updates via array methods · event delegation for dynamic lists · form validation with custom errors · localStorage persistence · async API integration with graceful failure handling. This is the exact thought process used in real production apps — just without a framework wrapping it.</div>
+  <p class="hand" style="font-size:1.2rem;color:var(--primary);margin-top:14px">Ab tum jaante ho vanilla JS me poora app kaise sochte-banate hain — framework koi bhi ho (React/Vue/Angular), yehi fundamentals unke neeche chal rahe hote hain. 🚀</p>
+</section>
+
+<!-- ============ 27 PROJECT BLUEPRINTS ============ -->
+<section id="projects" class="reveal">
+  <span class="eyebrow">27 · Project Blueprints</span>
+  <h2 class="stitle">Real Project Blueprints — Thought Process</h2>
+  <div class="acc open"><div class="acc-h" onclick="this.parentElement.classList.toggle('open')">🧮 Calculator <span class="acc-arrow">▾</span></div><div class="acc-body"><p>Logic: maintain a "current input" string + "previous value" + "operator" state. Key insight — never eval() user strings (security risk); parse operator/operands manually and compute. Common bug: chaining operations (5 + 3 + 2) needs to calculate intermediate results before applying the next operator.</p></div></div>
+  <div class="acc"><div class="acc-h" onclick="this.parentElement.classList.toggle('open')">✅ To-Do App <span class="acc-arrow">▾</span></div><div class="acc-body"><p>Same pattern as our capstone — array of objects in state, localStorage persistence, event delegation for dynamic add/delete/toggle. Scalability: for 1000s of items, consider virtual scrolling.</p></div></div>
+  <div class="acc"><div class="acc-h" onclick="this.parentElement.classList.toggle('open')">☁️ Weather App <span class="acc-arrow">▾</span></div><div class="acc-body"><p>Core skill: async fetch + error handling for a real external API (rate limits, network failures, invalid city names). UX consideration: show loading state during fetch, cache last searched city.</p></div></div>
+  <div class="acc"><div class="acc-h" onclick="this.parentElement.classList.toggle('open')">🔍 Search with Debounce <span class="acc-arrow">▾</span></div><div class="acc-body"><p>Debounce the input's keyup event (300ms) before firing the API call — prevents hammering the server on every keystroke. Combine with AbortController to cancel stale requests if a newer search starts.</p></div></div>
+  <div class="acc"><div class="acc-h" onclick="this.parentElement.classList.toggle('open')">📜 Infinite Scroll / Pagination <span class="acc-arrow">▾</span></div><div class="acc-body"><p>Use IntersectionObserver to detect when the user nears the bottom of the list, then fetch the next "page" of data and append (not replace) to existing array.</p></div></div>
+  <div class="acc"><div class="acc-h" onclick="this.parentElement.classList.toggle('open')">🖱️ Drag and Drop <span class="acc-arrow">▾</span></div><div class="acc-body"><p>Native HTML5 Drag and Drop API: dragstart, dragover (must preventDefault!), drop events. Store dragged item's id in dataTransfer, reorder array on drop, re-render.</p></div></div>
+  <div class="acc"><div class="acc-h" onclick="this.parentElement.classList.toggle('open')">🔐 Authentication Flow <span class="acc-arrow">▾</span></div><div class="acc-body"><p>Login form → POST credentials → server returns a token → store token (httpOnly cookie preferred over localStorage for security) → attach token to future request headers → redirect based on auth state.</p></div></div>
+</section>
+
+<!-- DIAGRAMS -->
+<section id="diagrams" class="reveal">
+  <span class="eyebrow">28 · Diagrams</span>
+  <h2 class="stitle">Visual Summary — Event Loop Flowchart</h2>
+  <div class="card" style="overflow-x:auto">
+    <svg viewBox="0 0 900 260" width="100%" style="min-width:640px">
+      <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6c63ff"/></marker></defs>
+      <g font-family="Poppins" font-size="12" font-weight="600" fill="#2d2d48">
+        <rect x="20" y="20" width="180" height="60" rx="16" fill="#6c63ff" opacity=".15" stroke="#6c63ff" stroke-width="2"/>
+        <text x="110" y="55" text-anchor="middle">Call Stack (sync code)</text>
+        <line x1="110" y1="80" x2="110" y2="130" stroke="#6c63ff" stroke-width="2" marker-end="url(#arrow)"/>
+        <text x="150" y="110" font-size="10">stack empty?</text>
+
+        <rect x="20" y="130" width="180" height="60" rx="16" fill="#ff6584" opacity=".15" stroke="#ff6584" stroke-width="2"/>
+        <text x="110" y="155" text-anchor="middle">Microtask Queue</text>
+        <text x="110" y="172" text-anchor="middle" font-size="10">(Promises)</text>
+        <line x1="200" y1="160" x2="280" y2="160" stroke="#6c63ff" stroke-width="2" marker-end="url(#arrow)"/>
+        <text x="240" y="150" font-size="10">all done</text>
+
+        <rect x="280" y="130" width="200" height="60" rx="16" fill="#f7971e" opacity=".15" stroke="#f7971e" stroke-width="2"/>
+        <text x="380" y="155" text-anchor="middle">Macrotask Queue</text>
+        <text x="380" y="172" text-anchor="middle" font-size="10">(setTimeout, events)</text>
+        <line x1="380" y1="130" x2="380" y2="80" stroke="#43c6ac" stroke-width="2" marker-end="url(#arrow)"/>
+        <text x="440" y="105" font-size="10">runs ONE task,</text>
+        <text x="440" y="118" font-size="10">back to Call Stack</text>
+
+        <line x1="480" y1="160" x2="600" y2="160" stroke="#e040fb" stroke-width="2" marker-end="url(#arrow)" stroke-dasharray="4"/>
+        <text x="620" y="165" font-size="11">then checks microtasks AGAIN</text>
+      </g>
+    </svg>
+  </div>
+
+  <div class="subhead">🧠 Mind Map — JavaScript Core Concepts</div>
+  <div class="card" style="overflow-x:auto">
+    <svg viewBox="0 0 800 420" width="100%" style="min-width:600px">
+      <g font-family="Poppins" font-size="12" font-weight="600">
+        <circle cx="400" cy="210" r="60" fill="#6c63ff"/><text x="400" y="215" text-anchor="middle" fill="#fff" font-size="14">JavaScript</text>
+        <g stroke="#c9c4ff" stroke-width="2">
+          <line x1="400" y1="150" x2="400" y2="70"/><line x1="345" y1="170" x2="180" y2="90"/>
+          <line x1="345" y1="250" x2="180" y2="330"/><line x1="455" y1="170" x2="620" y2="90"/>
+          <line x1="455" y1="250" x2="620" y2="330"/>
+        </g>
+        <circle cx="400" cy="55" r="42" fill="#ff6584"/><text x="400" y="60" text-anchor="middle" fill="#fff">Functions</text>
+        <circle cx="150" cy="75" r="46" fill="#43c6ac"/><text x="150" y="72" text-anchor="middle" fill="#fff">Objects</text><text x="150" y="88" text-anchor="middle" fill="#fff" font-size="10">Prototypes</text>
+        <circle cx="150" cy="345" r="46" fill="#00bcd4"/><text x="150" y="342" text-anchor="middle" fill="#fff">Async</text><text x="150" y="358" text-anchor="middle" fill="#fff" font-size="10">Event Loop</text>
+        <circle cx="650" cy="75" r="46" fill="#f7971e"/><text x="650" y="72" text-anchor="middle" fill="#fff">DOM</text><text x="650" y="88" text-anchor="middle" fill="#fff" font-size="10">Events</text>
+        <circle cx="650" cy="345" r="46" fill="#e040fb"/><text x="650" y="342" text-anchor="middle" fill="#fff">Advanced</text><text x="650" y="358" text-anchor="middle" fill="#fff" font-size="10">Closures/GC</text>
+      </g>
+    </svg>
+  </div>
+</section>
+
+<!-- CHEAT SHEET -->
+<section id="cheatsheet" class="reveal">
+  <span class="eyebrow">29 · Cheat Sheet</span>
+  <h2 class="stitle">Quick Reference Cheat Sheet</h2>
+  <div class="card"><table>
+    <tr><th>Concept</th><th>Syntax</th></tr>
+    <tr><td>Arrow function</td><td class="mono">const f = (a,b) => a+b;</td></tr>
+    <tr><td>Destructuring</td><td class="mono">const {a,b} = obj; const [x,y] = arr;</td></tr>
+    <tr><td>Spread</td><td class="mono">[...arr1, ...arr2]; {...obj1, ...obj2}</td></tr>
+    <tr><td>Optional chaining</td><td class="mono">obj?.prop?.nested</td></tr>
+    <tr><td>Nullish coalescing</td><td class="mono">value ?? defaultValue</td></tr>
+    <tr><td>Template literal</td><td class="mono">`Hello ${name}`</td></tr>
+    <tr><td>Async/await</td><td class="mono">const data = await fetch(url);</td></tr>
+    <tr><td>Array map/filter/reduce</td><td class="mono">arr.map(fn); arr.filter(fn); arr.reduce(fn, init)</td></tr>
+    <tr><td>Class</td><td class="mono">class X extends Y { constructor(){super();} }</td></tr>
+    <tr><td>Promise.all</td><td class="mono">await Promise.all([p1, p2])</td></tr>
+  </table></div>
+</section>
+
+<!-- FLASHCARDS -->
+<section id="flashcards" class="reveal">
+  <span class="eyebrow">30 · Flashcards</span>
+  <h2 class="stitle">Flashcards</h2>
+  <p class="sdesc">Click a card to flip it!</p>
+  <div class="grid g4">
+    <div class="flash" onclick="this.classList.toggle('flip')"><div class="flash-inner"><div class="flash-face flash-front">What is a Closure?</div><div class="flash-face flash-back">A function that remembers variables from its outer scope even after that scope has finished executing.</div></div></div>
+    <div class="flash" onclick="this.classList.toggle('flip')"><div class="flash-inner"><div class="flash-face flash-front">Event Loop?</div><div class="flash-face flash-back">Mechanism that lets single-threaded JS handle async operations by managing the call stack + task queues.</div></div></div>
+    <div class="flash" onclick="this.classList.toggle('flip')"><div class="flash-inner"><div class="flash-face flash-front">Hoisting?</div><div class="flash-face flash-back">Declarations are processed before code runs — var is initialized as undefined, let/const stay in the Temporal Dead Zone.</div></div></div>
+    <div class="flash" onclick="this.classList.toggle('flip')"><div class="flash-inner"><div class="flash-face flash-front">Prototype Chain?</div><div class="flash-face flash-back">The link between objects that JS uses to look up properties/methods not found directly on an object.</div></div></div>
+    <div class="flash" onclick="this.classList.toggle('flip')"><div class="flash-inner"><div class="flash-face flash-front">Pure Function?</div><div class="flash-face flash-back">Same input always gives same output, no side effects on outside state.</div></div></div>
+    <div class="flash" onclick="this.classList.toggle('flip')"><div class="flash-inner"><div class="flash-face flash-front">Microtask vs Macrotask?</div><div class="flash-face flash-back">Microtasks (Promises) always run before macrotasks (setTimeout), even with 0ms delay.</div></div></div>
+  </div>
+</section>
+
+<!-- MNEMONICS -->
+<section id="mnemonics" class="reveal">
+  <span class="eyebrow">31 · Mnemonics</span>
+  <h2 class="stitle">Mnemonics & Memory Tricks</h2>
+  <div class="grid g2">
+    <div class="sticky">"PIE" — <b>P</b>rimitives copy value, <b>I</b>nherited objects copy reference, <b>E</b>quality use ===</div>
+    <div class="sticky pink">Closures = "backpack" — function apne saath outer variables ka backpack le jaati hai, jahan bhi jaaye.</div>
+    <div class="sticky mint">Event Loop = "VIP line" — Microtasks (Promises) hamesha Macrotasks (setTimeout) se pehle jaate hain, VIP jaisa.</div>
+    <div class="sticky blue">== vs === : "=== ki extra = matlab extra strict (type bhi check)."</div>
+  </div>
+</section>
+
+<!-- PRACTICE QUESTIONS -->
+<section id="practiceq" class="reveal">
+  <span class="eyebrow">32 · Practice Questions</span>
+  <h2 class="stitle">Practice Questions</h2>
+  <div class="acc"><div class="acc-h" onclick="this.parentElement.classList.toggle('open')">Q1. What will this print? <span class="mono">console.log(typeof NaN)</span> <span class="acc-arrow">▾</span></div><div class="acc-body"><p>"number" — NaN is technically a special numeric value ("Not a Number" is still of type number).</p></div></div>
+  <div class="acc"><div class="acc-h" onclick="this.parentElement.classList.toggle('open')">Q2. Why does [1,2,3] + [4,5,6] give "1,2,34,5,6"? <span class="acc-arrow">▾</span></div><div class="acc-body"><p>+ with objects/arrays triggers coercion to strings first — each array becomes "1,2,3" and "4,5,6", then string concatenation happens.</p></div></div>
+  <div class="acc"><div class="acc-h" onclick="this.parentElement.classList.toggle('open')">Q3. What's the difference between synchronous and asynchronous code execution? <span class="acc-arrow">▾</span></div><div class="acc-body"><p>Synchronous code blocks the call stack until finished. Asynchronous code hands off work (to Web APIs/Node APIs) and continues, resuming via the event loop's queues when done.</p></div></div>
+  <div class="acc"><div class="acc-h" onclick="this.parentElement.classList.toggle('open')">Q4. How do you deep clone an object? <span class="acc-arrow">▾</span></div><div class="acc-body"><p>structuredClone(obj) (modern, native) or JSON.parse(JSON.stringify(obj)) (loses functions/undefined/dates), or a deep clone utility (lodash's cloneDeep) for complex cases.</p></div></div>
+</section>
+
+<!-- INTERVIEW QUESTIONS TIERED -->
+<section id="interviewq" class="reveal">
+  <span class="eyebrow">33 · Interview Questions</span>
+  <h2 class="stitle">Interview Questions — Tiered</h2>
+  <div class="tabs">
+    <button class="tab-btn active" onclick="showTab(event,'ivbeg')">Beginner</button>
+    <button class="tab-btn" onclick="showTab(event,'ivint')">Intermediate</button>
+    <button class="tab-btn" onclick="showTab(event,'ivadv')">Advanced</button>
+    <button class="tab-btn" onclick="showTab(event,'ivscn')">Scenario-Based</button>
+    <button class="tab-btn" onclick="showTab(event,'ivcode')">Coding Round</button>
+  </div>
+
+  <div class="tab-panel active" id="ivbeg">
+    <div class="box interview"><h4>🎤 What is the difference between let, const, and var?</h4>var is function-scoped and hoisted with undefined initialization. let/const are block-scoped, live in the Temporal Dead Zone until declared, and const can't be reassigned.</div>
+    <div class="box interview"><h4>🎤 What is NaN?</h4>"Not a Number" — a special numeric value representing an invalid math operation (e.g. 0/0). Interestingly, typeof NaN === 'number', and NaN !== NaN.</div>
+    <div class="box interview"><h4>🎤 Difference between null and undefined?</h4>undefined = value not assigned yet (engine default). null = intentionally set to "no value" by the developer.</div>
+    <div class="box interview"><h4>🎤 What are template literals?</h4>Backtick strings that allow embedded expressions via ${} and multi-line strings without concatenation.</div>
+  </div>
+
+  <div class="tab-panel" id="ivint">
+    <div class="box interview"><h4>🎤 Explain closures with an example.</h4>A closure is a function that retains access to its outer scope's variables even after the outer function returns — used for private state, factory functions, and memoization.</div>
+    <div class="box interview"><h4>🎤 What is the difference between call, apply, and bind?</h4>call/apply invoke the function immediately with a given 'this' (call takes args individually, apply takes an array). bind returns a new function with 'this' permanently set, without invoking it.</div>
+    <div class="box interview"><h4>🎤 What is event delegation and why use it?</h4>Attaching a single listener to a parent element instead of many listeners on children — works for dynamically added elements and is more memory-efficient.</div>
+    <div class="box interview"><h4>🎤 Explain the prototype chain.</h4>Every object has an internal link to another object (its prototype). Property lookups that fail on the object itself walk up this chain until found or until null is reached.</div>
+    <div class="box interview"><h4>🎤 What's the difference between synchronous and asynchronous JavaScript?</h4>Sync code runs top to bottom, blocking further execution. Async code (via callbacks/promises/async-await) lets long-running operations happen in the background without freezing the main thread.</div>
+  </div>
+
+  <div class="tab-panel" id="ivadv">
+    <div class="box interview"><h4>🎤 Explain the Event Loop in detail.</h4>The engine runs synchronous code on the call stack. Once empty, it drains the entire microtask queue (Promises), then takes ONE task from the macrotask queue (setTimeout, events), then checks microtasks again — repeating forever.</div>
+    <div class="box interview"><h4>🎤 What is a memory leak in JS and how do you avoid one?</h4>Memory that should be freed but isn't because something still references it — common causes: forgotten timers/listeners, closures holding large unused data. Avoided by cleaning up listeners/timers and using WeakMap/WeakSet for caches.</div>
+    <div class="box interview"><h4>🎤 What are generators used for?</h4>Functions that can pause (yield) and resume execution, maintaining internal state between calls — useful for lazy sequences, custom iterables, and infinite data streams.</div>
+    <div class="box interview"><h4>🎤 Explain Proxy and a real use case.</h4>A Proxy wraps an object and intercepts fundamental operations (get, set, delete) via "traps." Vue 3's entire reactivity system is built on Proxy to detect state changes automatically.</div>
+    <div class="box interview"><h4>🎤 Why is 0.1 + 0.2 !== 0.3 in JavaScript?</h4>Numbers are stored as IEEE-754 double-precision floats, which can't represent 0.1/0.2 exactly in binary, leading to tiny rounding errors. Compare using a small epsilon tolerance instead of ===.</div>
+  </div>
+
+  <div class="tab-panel" id="ivscn">
+    <div class="box interview"><h4>🎤 A loop using var + setTimeout logs the wrong values. How do you fix it and why?</h4>Because var is function-scoped, all callbacks share one variable which has already reached its final value by the time they run. Fix: use let (creates a new binding per iteration) or wrap in an IIFE to capture the current value.</div>
+    <div class="box interview"><h4>🎤 A search box is firing an API call on every keystroke, overwhelming the server. How do you fix it?</h4>Debounce the input handler (e.g. 300ms) so the API call only fires after the user pauses typing; also use AbortController to cancel stale in-flight requests.</div>
+    <div class="box interview"><h4>🎤 Your app throws "Cannot read property of undefined" intermittently after an API call. What's likely wrong and how do you debug it?</h4>Data likely hasn't arrived yet when the code tries to read it (race condition) or the API returned an unexpected shape. Debug with console.log at each step, add optional chaining/guards, and validate the response shape.</div>
+  </div>
+
+  <div class="tab-panel" id="ivcode">
+    <div class="box interview"><h4>🎤 Implement a debounce function.</h4>
+    <pre style="margin-top:8px;font-size:.78rem"><span class="kw">function</span> <span class="fn">debounce</span>(fn, delay) {
+  <span class="kw">let</span> timer;
+  <span class="kw">return function</span>(...args) {
+    clearTimeout(timer);
+    timer = setTimeout(() =&gt; fn.apply(<span class="kw">this</span>, args), delay);
+  };
+}</pre></div>
+    <div class="box interview"><h4>🎤 Flatten a nested array without using Array.flat().</h4>
+    <pre style="margin-top:8px;font-size:.78rem"><span class="kw">function</span> <span class="fn">flatten</span>(arr) {
+  <span class="kw">return</span> arr.reduce((flat, item) =&gt;
+    flat.concat(Array.isArray(item) ? <span class="fn">flatten</span>(item) : item), []);
+}
+<span class="fn">flatten</span>([<span class="st">1</span>,[<span class="st">2</span>,[<span class="st">3</span>,<span class="st">4</span>]],<span class="st">5</span>]); <span class="cm">// [1,2,3,4,5]</span></pre></div>
+    <div class="box interview"><h4>🎤 Write a function to check if a string is a palindrome.</h4>
+    <pre style="margin-top:8px;font-size:.78rem"><span class="kw">function</span> <span class="fn">isPalindrome</span>(str) {
+  <span class="kw">const</span> clean = str.toLowerCase().replace(<span class="cm">/[^a-z0-9]/g</span>, <span class="st">''</span>);
+  <span class="kw">return</span> clean === clean.split(<span class="st">''</span>).reverse().join(<span class="st">''</span>);
+}</pre></div>
+  </div>
+</section>
+
+<!-- MISTAKES -->
+<section id="mistakes" class="reveal">
+  <span class="eyebrow">34 · Common Mistakes</span>
+  <h2 class="stitle">Common Mistakes to Avoid</h2>
+  <div class="grid g2">
+    <div class="box warning"><h4>⚠️ Using == instead of ===</h4>Leads to unexpected coercion bugs ("" == 0 is true!). Always use === unless you have a specific, deliberate reason.</div>
+    <div class="box warning"><h4>⚠️ Forgetting await</h4>Calling an async function without await returns a pending Promise, not the resolved value — a very common beginner bug.</div>
+    <div class="box warning"><h4>⚠️ Mutating arrays/objects directly</h4>Leads to unpredictable bugs in frameworks that rely on reference-equality checks (like React) to detect changes.</div>
+    <div class="box warning"><h4>⚠️ Not handling Promise rejections</h4>An unhandled rejected promise can silently fail or crash a Node process — always add .catch() or try/catch with async/await.</div>
+    <div class="box warning"><h4>⚠️ Using var in loops with async callbacks</h4>Classic bug — all callbacks share the same var, resulting in the same final value being logged for every iteration.</div>
+    <div class="box warning"><h4>⚠️ Comparing objects with ===</h4>{} === {} is always false — objects are compared by reference, not by content. Use a deep-equality check (or JSON.stringify comparison for simple cases) if needed.</div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section id="finalsummary" class="reveal">
+  <span class="eyebrow">35 · Final Summary</span>
+  <h2 class="stitle">Final Summary</h2>
+  <div class="card" style="background:linear-gradient(135deg,rgba(108,99,255,.1),rgba(255,101,132,.08));">
+    <p style="font-size:.94rem">JavaScript ek single-threaded, event-driven language hai jiski simplicity aur power dono hi uske asynchronous model, closures, aur prototype-based object system se aati hai. In fundamentals ko deeply samajhna — event loop, scope, this, prototypes — kisi bhi framework (React, Vue, Node, Angular) ko seekhna dramatically fast bana deta hai, kyunki wo sab isi foundation ke upar bane hain. Ab practice karo, real projects banao, aur confidently code likho.</p>
+  </div>
+</section>
+
+</div>
+
+<footer>
+  <div class="wrap">
+    <p class="hand" style="font-size:1.4rem;color:var(--primary)">Happy Coding! 🟨</p>
+    <p style="margin-top:8px">JavaScript — The Complete Study Notebook · Crafted for deep understanding & interview prep</p>
+  </div>
+</footer>
+
+<button id="toTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+window.addEventListener('scroll',()=>{
+  const h=document.documentElement;
+  const pct=(h.scrollTop)/(h.scrollHeight-h.clientHeight)*100;
+  document.getElementById('progress').style.width=pct+'%';
+  document.getElementById('toTop').classList.toggle('show', h.scrollTop>500);
+});
+const obs=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('in'); });
+},{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+function copyCode(btn){
+  const pre=btn.closest('pre');
+  const text=pre.innerText.replace('Copy','').trim();
+  navigator.clipboard.writeText(text);
+  btn.textContent='Copied!';
+  setTimeout(()=>btn.textContent='Copy',1200);
+}
+function showTab(evt,id){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  evt.target.classList.add('active');
+}
+document.getElementById('searchBox').addEventListener('keydown', e=>{
+  if(e.key==='Enter'){
+    const term=e.target.value.trim().toLowerCase();
+    if(!term) return;
+    const all=document.querySelectorAll('.wrap *');
+    for(const el of all){
+      if(el.children.length===0 && el.textContent.toLowerCase().includes(term)){
+        el.scrollIntoView({behavior:'smooth',block:'center'});
+        el.style.outline='2px solid var(--secondary)';
+        setTimeout(()=>el.style.outline='',1500);
+        break;
+      }
+    }
+  }
+});
+</script>
+</body>
+</html>
